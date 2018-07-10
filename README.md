@@ -1,10 +1,16 @@
-# Semi Supervised Learning : Improving speech recognition accuracy using sythesized speech output from GANs
+# Improving speech recognition accuracy using sythesized speech output from semi supervised GANs
 
 In this project we use Deep learning to synthesis speech/audio using WaveGAN and SpecGAN ([paper](https://arxiv.org/abs/1802.04208)). The thus synthesized raw audio is used for improving the baseline system. 
 
 ## Getting Started
 
 Most of the deep learning techniques needs huge data to train the system. But to collect data large scale is a bottleneck. Not only one must have data but also it should be able to cover the various scenarios happening in the real world. Suppose there is a way to generate new data from existing data (labeled as well as unlabeled). Here in this work I explore that possiblity in speech domain. Recently a lot of work in Speech Recognition were focused on Speech Synthesis. A flury of paper has been coming since the introduction of GANs by Goodfellow, Ian, et al (2014) and later used it successfuly in style transfer for Images. Style transfer for Images have since then kicked off. Recenlty WaveGAN and SpecGAN were used by researchers at UC San Diego for generating meaningful audio data ([samples](http://wavegan-v1.s3-website-us-east-1.amazonaws.com/))
+
+## Proposed System
+
+
+<img src="images/Architecture.png"/>
+<img src="images/ASRInterface.png"/>
 
 ## Usage
 
