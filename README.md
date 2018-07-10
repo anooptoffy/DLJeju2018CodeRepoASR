@@ -6,6 +6,9 @@ In this project we use Deep learning to synthesis speech/audio using WaveGAN and
 
 Most of the deep learning techniques needs huge data to train the system. But to collect data large scale is a bottleneck. Not only one must have data but also it should be able to cover the various scenarios happening in the real world. Suppose there is a way to generate new data from existing data (labeled as well as unlabeled). Here in this work I explore that possiblity in speech domain. Recently a lot of work in Speech Recognition were focused on Speech Synthesis. A flury of paper has been coming since the introduction of GANs by Goodfellow, Ian, et al (2014) and later used it successfuly in style transfer for Images. Style transfer for Images have since then kicked off. Recenlty WaveGAN and SpecGAN were used by researchers at UC San Diego for generating meaningful audio data ([samples](http://wavegan-v1.s3-website-us-east-1.amazonaws.com/))
 
+## Usage
+
+
 ### Prerequisites
 
 * Tensorflow >= 1.4
@@ -48,3 +51,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
+* Dr. Gue Jun Jung, Speech Recognition Tech, SK Telecom
+* Tensorflow Korea
+* Google Korea
+* SK Telecom
