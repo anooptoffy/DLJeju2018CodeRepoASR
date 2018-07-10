@@ -15,7 +15,7 @@ Details on a few advancement in the field of humanlike speech synthesis.
 #### Architecture
 
 <img src="images/wavegan.png"/>
-<img src="images/results.png"/>
+<img src="images/wavegan_results.png"/>
 
 Listen to WaveGAN demo here [website](http://wavegan-v1.s3-website-us-east-1.amazonaws.com/)
 
