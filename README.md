@@ -52,6 +52,7 @@ We are using the isolated word recognition with a vocab size of 10. [baseline](h
 
 ## Authors
 
+* **Chae Young Lee** - *Hankuk Academy of Foreign Studies* - [Homepage](https://github.com/acheketa)
 * **Anoop Toffy** - *IIIT Bangalore* - [Personal Website](www.anooptoffy.com)
 
 ## License
