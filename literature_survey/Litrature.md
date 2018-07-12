@@ -27,8 +27,11 @@ Listen to WaveGAN demo here [website](http://wavegan-v1.s3-website-us-east-1.ama
 
 Listen to the audio generated from Tacotron2 model from Google AI Team [website](https://google.github.io/tacotron/publications/tacotron2/index.html)
 
+All Tacotron based discussions summarized here, https://google.github.io/tacotron/index.html
 
 ## Applications
 
 * TTS - text-to-speech Systems
 * Smart Devices like Google Home, Amazon Echo
+* Speaker Adaption
+* Music Generation/Synthesis
