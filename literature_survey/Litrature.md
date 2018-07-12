@@ -7,6 +7,7 @@ Details on a few advancement in the field of humanlike speech synthesis.
 1. WaveGAN and SpecGAN
 2. Tacotron 2
 3. Style Transfer Audio
+4. Glow 
 
 ## Details
 
@@ -28,6 +29,13 @@ Listen to WaveGAN demo here [website](http://wavegan-v1.s3-website-us-east-1.ama
 Listen to the audio generated from Tacotron2 model from Google AI Team [website](https://google.github.io/tacotron/publications/tacotron2/index.html)
 
 All Tacotron based discussions summarized here, https://google.github.io/tacotron/index.html
+
+### Glow : Better Reversible Generative Models
+
+Moving towards better reversible generative models from Open AI is a promising research. It is currently applied to images.
+
+[link](https://blog.openai.com/glow
+
 
 ## Applications
 
