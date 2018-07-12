@@ -28,11 +28,12 @@ Most of the deep learning techniques needs huge data to train the system. But to
 
 ### Baseline Speech Recognition System
 
-We are using the isolated word recognition with a vocab size of 10. [baseline](https://www.tensorflow.org/tutorials/audio_recognition)
+We are using the isolated word recognition with a vocab size of 10. [baseline](https://www.tensorflow.org/tutorials/audio_recognition) [paper](https://www.isca-speech.org/archive/interspeech_2015/papers/i15_1478.pdf)
+
 
 ### GAN based Speech Synthesis system
 
-
+We are using WaveGAN and SpecGAN for speech Synthesis from the training data. [github](https://github.com/chrisdonahue/wavegan)
 
 ### References
 
