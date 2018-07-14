@@ -9,8 +9,8 @@ Most of the deep learning techniques needs huge data to train the system. But to
 ## Proposed System
 
 
-<img src="images/Architecture.png"/>
-<img src="images/ASRInterface.png"/>
+<img src="images/Architecture1.jpeg"/>
+<img src="images/Architecture2.jpeg"/>
 
 ## Usage
 
