@@ -8,7 +8,7 @@ import tensorflow as tf
 from six.moves import xrange
 
 import loader
-from wavegan import WaveGANGenerator, WaveGANDiscriminator
+from slwavegan import WaveGANGenerator, WaveGANDiscriminator
 from functools import reduce
 
 
