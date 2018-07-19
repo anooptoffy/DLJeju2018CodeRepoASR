@@ -18,6 +18,7 @@ from functools import reduce
 _FS = 16000
 _WINDOW_LEN = 16374
 _D_Z = 90
+_D_Y = 10
 
 
 """
@@ -236,7 +237,7 @@ def infer(args):
   samp_z = tf.random_uniform([samp_z_n, _D_Z], -1.0, 1.0, dtype=tf.float32, name='samp_z')
 
   # Input zo
-  z = tf.placeholder(tf.float32, [None, _D_Z], name='z')
+  z = tf.placeholder(tf.float32, [None, _D_Z + _D_Y], name='z')
   flat_pad = tf.placeholder(tf.int32, [], name='flat_pad')
 
   # Execute generator
@@ -318,6 +319,15 @@ def preview(args):
     with open(z_fp, 'wb') as f:
       pickle.dump(_zs, f)
 
+  # label to one hot vector
+  sample_n = 20
+  one_hot = np.zeros([sample_n, _D_Y])
+  _zs = _zs[:sample_n]
+  for i in range(10):
+    one_hot[2 * i + 1][i] = 1
+    one_hot[2 * i][i] = 1
+  _zs = np.concatenate([_zs, one_hot], 1)
+
   # Set up graph for generating preview images
   feeds = {}
   feeds[graph.get_tensor_by_name('z:0')] = _zs
@@ -348,7 +358,7 @@ def preview(args):
   ckpt_fp = None
   while True:
     latest_ckpt_fp = tf.train.latest_checkpoint(args.train_dir)
-    if latest_ckpt_fp != ckpt_fp:
+    if latest_ckpt_fp == ckpt_fp:
       print('Preview: {}'.format(latest_ckpt_fp))
 
       with tf.Session() as sess:
@@ -358,8 +368,15 @@ def preview(args):
 
         _step = _fetches['step']
 
-      preview_fp = os.path.join(preview_dir, '{}.wav'.format(str(_step).zfill(8)))
-      wavwrite(preview_fp, _FS, _fetches['G_z_flat_int16'])
+      gen_speech = _fetches['G_z_flat_int16']
+      gen_len = len(gen_speech) / sample_n
+
+      for i in range(sample_n):
+        label = int(i / 2)
+        start = i * gen_len
+        end = start + gen_len
+        preview_fp = os.path.join(preview_dir, '{}_{}_{}.wav'.format(str(label), str(_step), str(i)))
+        wavwrite(preview_fp, _FS, gen_speech[start:end])
 
       summary_writer.add_summary(_fetches['summaries'], _step)
 
@@ -391,6 +408,7 @@ def preview(args):
       print('Done')
 
       ckpt_fp = latest_ckpt_fp
+      break
 
     time.sleep(1)
 
