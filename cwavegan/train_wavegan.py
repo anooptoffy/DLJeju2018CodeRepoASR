@@ -358,7 +358,7 @@ def preview(args):
   ckpt_fp = None
   while True:
     latest_ckpt_fp = tf.train.latest_checkpoint(args.train_dir)
-    if latest_ckpt_fp == ckpt_fp:
+    if latest_ckpt_fp != ckpt_fp:
       print('Preview: {}'.format(latest_ckpt_fp))
 
       with tf.Session() as sess:
