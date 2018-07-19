@@ -408,7 +408,6 @@ def preview(args):
       print('Done')
 
       ckpt_fp = latest_ckpt_fp
-      break
 
     time.sleep(1)
 
