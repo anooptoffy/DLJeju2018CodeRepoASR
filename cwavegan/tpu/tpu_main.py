@@ -244,11 +244,11 @@ def main(argv):
   current_step = estimator._load_global_step_from_checkpoint_dir(FLAGS.model_dir)   # pylint: disable=protected-access,line-too-long
   tf.logging.info('Starting training for %d steps, current step: %d' %
                   (FLAGS.train_steps, current_step))
-  """
+
   while current_step < FLAGS.train_steps:
     next_checkpoint = min(current_step + FLAGS.train_steps_per_eval,
                           FLAGS.train_steps)
-    est.train(input_fn=generate_input_fn(True),
+    #est.train(input_fn=generate_input_fn(True),
               max_steps=next_checkpoint)
     current_step = next_checkpoint
     tf.logging.info('Finished training step %d' % current_step)
@@ -260,6 +260,7 @@ def main(argv):
       tf.logging.info('Finished evaluating')
       tf.logging.info(metrics)
 
+    """
     # Render some generated images
     generated_iter = cpu_est.predict(input_fn=noise_input_fn)
     images = [p['generated_images'][:, :, :] for p in generated_iter]
@@ -276,7 +277,7 @@ def main(argv):
                      'generated_images', 'gen_%s.png' % (step_string)), 'w')
     img.save(file_obj, format='png')
     tf.logging.info('Finished generating images')
-  """
+    """
 
 if __name__ == '__main__':
   tf.logging.set_verbosity(tf.logging.INFO)
