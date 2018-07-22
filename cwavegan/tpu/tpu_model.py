@@ -136,8 +136,8 @@ def discriminator(
     kernel_len=25,
     dim=64,
     use_batchnorm=True,
-    phaseshuffle_rad=0
-    reuse=False,
+    phaseshuffle_rad=0,
+    reuse=False
     ):
   batch_size = tf.shape(x)[0]
 
