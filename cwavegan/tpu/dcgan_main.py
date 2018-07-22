@@ -95,8 +95,8 @@ def model_fn(features, labels, mode, params):
 
   # concatenate
   #label_fill = tf.expand_dims(labels, axis=2)
-  random_noise = tf.concat([random_noise, label], 1)
-  real_images = tf.concat([real_images, label], 1)
+  random_noise = tf.concat([random_noise, labels], 1)
+  real_images = tf.concat([real_images, labels], 1)
 
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_images = model.generator(random_noise,
