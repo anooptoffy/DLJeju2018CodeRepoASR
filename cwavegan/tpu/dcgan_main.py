@@ -102,8 +102,8 @@ def model_fn(features, labels, mode, params):
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_images = model.generator(random_noise,
                                      is_training=is_training)
-  print(generated_images)
-  assert False
+  generated_images = tf.concat([generated_images, label_fill], 3)
+
   # Get logits from discriminator
   d_on_data_logits = tf.squeeze(model.discriminator1(real_images))
   d_on_g_logits = tf.squeeze(model.discriminator1(generated_images))
