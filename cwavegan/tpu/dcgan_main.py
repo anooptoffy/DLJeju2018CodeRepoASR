@@ -98,11 +98,12 @@ def model_fn(features, labels, mode, params):
   label_fill = label_fill * np.ones([batch_size, 28, 28, 10])
   random_noise = tf.concat([random_noise, labels], 1)
   real_images = tf.concat([real_images, label_fill], 3)
-  
+
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_images = model.generator(random_noise,
                                      is_training=is_training)
-
+  print(generated_images)
+  assert False
   # Get logits from discriminator
   d_on_data_logits = tf.squeeze(model.discriminator1(real_images))
   d_on_g_logits = tf.squeeze(model.discriminator1(generated_images))

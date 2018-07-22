@@ -87,18 +87,18 @@ def discriminator1(x, is_training=True, scope='Discriminator'):
     # initializer
     w_init = tf.truncated_normal_initializer(mean=0.0, stddev=0.02)
     b_init = tf.constant_initializer(0.0)
-    print(x)
+    
     # 1st hidden layer
     conv1 = tf.layers.conv2d(x, 128, [5, 5], strides=(2, 2), padding='same', kernel_initializer=w_init, bias_initializer=b_init)
     lrelu1 = lrelu(conv1, 0.2)
-    print(conv1)
+    
     # 2nd hidden layer
     conv2 = tf.layers.conv2d(lrelu1, 256, [5, 5], strides=(2, 2), padding='same', kernel_initializer=w_init, bias_initializer=b_init)
     lrelu2 = lrelu(tf.layers.batch_normalization(conv2, training=is_training), 0.2)
-    print(conv2)
+    
     # output layer
     conv3 = tf.layers.conv2d(lrelu2, 1, [7, 7], strides=(1, 1), padding='valid', kernel_initializer=w_init)
-    print(conv3)
+    
     return conv3
 
 def generator(x, is_training=True, scope='Generator'):
