@@ -149,11 +149,11 @@ def discriminator(
   else:
     phaseshuffle = lambda x: x
 
-  with tf.variable_scope('discriminator_0', reuse=tf.AUTO_REUSE):
+  with tf.variable_scope('discriminator_0', reuse=False):
     # Layer 0
     # [16384, 1] -> [4096, 64]
     output = x
-    output = tf.layers.conv1d(output, dim, kernel_len, 4, padding='SAME', reuse=True, name='downconv_0')
+    output = tf.layers.conv1d(output, dim, kernel_len, 4, padding='SAME', name='downconv_0')
     output = lrelu(output)
     output = phaseshuffle(output)
 
