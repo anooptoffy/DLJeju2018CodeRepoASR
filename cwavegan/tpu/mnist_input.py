@@ -49,8 +49,7 @@ def parser(serialized_example):
 
   label = features['label']
   label.set_shape(10)
-  print(label)
-  assert False
+
   return image, label
 
 
