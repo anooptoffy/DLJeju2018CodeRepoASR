@@ -38,7 +38,7 @@ def parser(serialized_example):
       serialized_example,
       features={
           'image_raw': tf.FixedLenFeature([], tf.string),
-          'label': tf.FixedLenFeature([], tf.int64)   # label is unused
+          'label': tf.FixedLenFeature([], tf.float32)   # label is unused
       })
   image = tf.decode_raw(features['image_raw'], tf.uint8)
   image.set_shape([28 * 28])
@@ -47,8 +47,7 @@ def parser(serialized_example):
   # Normalize the values of the image from [0, 255] to [-1.0, 1.0]
   image = tf.cast(image, tf.float32) * (2.0 / 255) - 1.0
 
-  label = tf.cast(tf.reshape(features['label'], shape=[]), dtype=tf.float32)
-  print("here", label)
+  label = features['label']
   label.set_shape(10)
   return image, label
 
