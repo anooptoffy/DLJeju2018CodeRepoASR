@@ -77,7 +77,7 @@ class InputFunction(object):
 
     data_files = []
     for i in range(128):
-      data_file = FLAG.data_file + 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
+      data_file = FLAGS.data_file + 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
       data_files.append(data_file)
 
     dataset = tf.data.TFRecordDataset(data_files)
