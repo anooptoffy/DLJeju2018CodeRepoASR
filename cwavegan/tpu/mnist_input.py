@@ -48,7 +48,6 @@ def parser(serialized_example):
   image = tf.cast(image, tf.float32) * (2.0 / 255) - 1.0
 
   label = features['label']
-  label.set_shape(10)
   return image, label
 
 
