@@ -49,7 +49,7 @@ flags.DEFINE_string(
 # Model specific paramenters
 flags.DEFINE_string('dataset', 'mnist',
                     'One of ["mnist", "cifar"]. Requires additional flags')
-flags.DEFINE_string('model_dir', '', 'Output model directory')
+flags.DEFINE_string('model_dir', 'gs://acheketa-ckpt', 'Output model directory')
 flags.DEFINE_integer('noise_dim', 54,
                      'Number of dimensions for the noise vector')
 flags.DEFINE_integer('batch_size', 1024,
@@ -94,9 +94,9 @@ def model_fn(features, labels, mode, params):
   random_noise = features['random_noise']
 
   # concatenate
-  label_fill = tf.expand_dims(labels, axis=2)
+  #label_fill = tf.expand_dims(labels, axis=2)
   random_noise = tf.concat([random_noise, label], 1)
-  real_images = tf.concat([real_images, label_fill], 1)
+  real_images = tf.concat([real_images, label], 1)
 
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_images = model.generator(random_noise,
