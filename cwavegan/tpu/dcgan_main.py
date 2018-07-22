@@ -94,7 +94,7 @@ def model_fn(features, labels, mode, params):
   random_noise = features['random_noise']
 
   # concatenate
-  label_fill = label.reshape([batch_size, 1, 1, 10])
+  label_fill = labels.reshape([batch_size, 1, 1, 10])
   random_noise = tf.concat([random_noise, labels], 1)
   real_images = tf.concat([real_images, label_fill], 1)
 
