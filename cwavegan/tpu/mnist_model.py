@@ -29,6 +29,12 @@ import tensorflow as tf
 def _leaky_relu(x):
   return tf.nn.leaky_relu(x, alpha=0.2)
 
+# leaky_relu
+def lrelu(X, leak=0.2):
+    f1 = 0.5 * (1 + leak)
+    f2 = 0.5 * (1 - leak)
+    return f1 * X + f2 * tf.abs(X)
+
 
 def _batch_norm(x, is_training, name):
   return tf.layers.batch_normalization(
