@@ -222,15 +222,9 @@ def main(argv):
   # Set module-level global variable so that model_fn and input_fn can be
   # identical for each different kind of dataset and model
   global dataset, model
-  if FLAGS.dataset == 'mnist':
-    dataset = mnist_input
-    model = mnist_model
-  elif FLAGS.dataset == 'cifar':
-    dataset = cifar_input
-    model = cifar_model
-  else:
-    raise ValueError('Invalid dataset: %s' % FLAGS.dataset)
-
+  dataset = tpu_input
+  model = tpu_model
+  
   # TPU-based estimator used for TRAIN and EVAL
   est = tf.contrib.tpu.TPUEstimator(
       model_fn=model_fn,
