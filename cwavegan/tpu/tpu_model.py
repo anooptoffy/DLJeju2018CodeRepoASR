@@ -190,7 +190,7 @@ def discriminator(
   output = tf.reshape(output, [batch_size, 4 * 4 * dim * 16])
 
   # Connect to single logit
-  with tf.variable_scope('output'):
+  with tf.variable_scope('output', reuse=reuse):
     output = tf.layers.dense(output, 1)[:, 0]
 
   # Don't need to aggregate batchnorm update ops like we do for the generator because we only use the discriminator for training
