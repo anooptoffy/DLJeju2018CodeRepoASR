@@ -98,8 +98,7 @@ def model_fn(features, labels, mode, params):
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_images = model.generator_wavegan(random_noise,
                                      train=is_training)
-  generated_images = tf.concat([generated_images, label_fill], 1)
-
+  
   # Get logits from discriminator
   d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_images, reuse=False))
   d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_images, reuse=True))
