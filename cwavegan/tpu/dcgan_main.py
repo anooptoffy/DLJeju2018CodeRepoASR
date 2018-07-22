@@ -97,7 +97,11 @@ def model_fn(features, labels, mode, params):
   label_fill = tf.reshape(labels, [batch_size, 1, 1, 10])
   label_fill = label_fill * np.ones([batch_size, 28, 28, 10])
   random_noise = tf.concat([random_noise, labels], 1)
+  print("here", real_images)
+  print(label_fill)
   real_images = tf.concat([real_images, label_fill], 3)
+  print(real_images)
+  assert False
 
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_images = model.generator(random_noise,
