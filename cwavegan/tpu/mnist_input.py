@@ -38,7 +38,7 @@ def parser(serialized_example):
       serialized_example,
       features={
           'image_raw': tf.FixedLenFeature([], tf.string),
-          'label': tf.FixedLenFeature([], tf.float32)   # label is unused
+          'label': tf.FixedLenSequenceFeature([], tf.float32, allow_missing=True)   # label is unused
       })
   image = tf.decode_raw(features['image_raw'], tf.uint8)
   image.set_shape([28 * 28])
@@ -48,8 +48,6 @@ def parser(serialized_example):
   image = tf.cast(image, tf.float32) * (2.0 / 255) - 1.0
 
   label = features['label']
-  with sess as tf.Session():
-    print(sess.run(label))
   print("here", label)
   print("here", image)
   assert False
