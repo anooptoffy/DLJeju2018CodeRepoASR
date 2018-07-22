@@ -78,7 +78,7 @@ class InputFunction(object):
     data_files = []
     for i in range(128):
       data_file = 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
-      data_files = data_files.append(data_file)
+      data_files.append(data_file)
     print(data_files)
     assert False
 
