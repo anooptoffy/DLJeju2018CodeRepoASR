@@ -408,7 +408,6 @@ def preview(args):
       print('Done')
 
       ckpt_fp = latest_ckpt_fp
-      break
 
     time.sleep(1)
 
@@ -443,6 +442,15 @@ def incept(args):
       _zs = sess.run(gan_samp_z, {gan_samp_z_n: args.incept_n})
     with open(z_fp, 'wb') as f:
       pickle.dump(_zs, f)
+
+  # label to one hot vector
+  sample_n = 20
+  one_hot = np.zeros([sample_n, _D_Y])
+  _zs = _zs[:sample_n]
+  for i in range(10):
+    one_hot[2 * i + 1][i] = 1
+    one_hot[2 * i][i] = 1
+  _zs = np.concatenate([_zs, one_hot], 1)
 
   # Load classifier graph
   incept_graph = tf.Graph()
