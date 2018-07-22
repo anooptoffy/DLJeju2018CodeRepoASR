@@ -75,10 +75,10 @@ class InputFunction(object):
 
     batch_size = params['batch_size']
 
-    data_files = np.array([])
+    data_files = []
     for i in range(128):
       data_file = 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
-      data_files = np.concatenate((data_files, data_file), axis=0)
+      data_files = data_files.extend(data_file)
     print(data_files)
     assert False
 
