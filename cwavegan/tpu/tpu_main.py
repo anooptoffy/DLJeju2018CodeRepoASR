@@ -99,8 +99,8 @@ def model_fn(features, labels, mode, params):
                                      train=is_training)
 
   # Get logits from discriminator
-  d_on_data_logits = tf.squeeze(model.discriminator(real_audio))
-  d_on_g_logits = tf.squeeze(model.discriminator(generated_audio))
+  d_on_data_logits = tf.squeeze(model.discriminator(real_audio, reuse=False))
+  d_on_g_logits = tf.squeeze(model.discriminator(generated_audio, reuse=True))
 
   # Calculate discriminator loss
   d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(

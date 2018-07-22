@@ -136,7 +136,9 @@ def discriminator(
     kernel_len=25,
     dim=64,
     use_batchnorm=True,
-    phaseshuffle_rad=0):
+    phaseshuffle_rad=0
+    reuse=False,
+    ):
   batch_size = tf.shape(x)[0]
 
   if use_batchnorm:
@@ -149,7 +151,7 @@ def discriminator(
   else:
     phaseshuffle = lambda x: x
 
-  with tf.variable_scope('discriminator_0', reuse=True):
+  with tf.variable_scope('discriminator_0', reuse=reuse):
     # Layer 0
     # [16384, 1] -> [4096, 64]
     output = x
