@@ -94,7 +94,7 @@ def discriminator1(x, is_training=True, scope='Discriminator'):
 
     # 2nd hidden layer
     conv2 = tf.layers.conv2d(lrelu1, 256, [5, 5], strides=(2, 2), padding='same', kernel_initializer=w_init, bias_initializer=b_init)
-    lrelu2 = lrelu(tf.layers.batch_normalization(conv2, training=isTrain), 0.2)
+    lrelu2 = lrelu(tf.layers.batch_normalization(conv2, training=is_training), 0.2)
 
     # output layer
     conv3 = tf.layers.conv2d(lrelu2, 1, [7, 7], strides=(1, 1), padding='valid', kernel_initializer=w_init)
