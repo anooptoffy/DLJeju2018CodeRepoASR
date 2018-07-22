@@ -75,10 +75,14 @@ class InputFunction(object):
 
     batch_size = params['batch_size']
 
-    print(self.data_file)
+    data_files = np.array([])
+    for i in len(128):
+      data_file = 'train-{}-of-128.tfrecord'.format(str(i).zfill(len(3)))
+      data_files = np.vstack((data_files, data_file))
+    print(data_files)
     assert False
 
-    dataset = tf.data.TFRecordDataset(self.data_file)
+    dataset = tf.data.TFRecordDataset(data_files)
     dataset = dataset.map(parser).cache()
     if self.is_training:
         dataset = dataset.repeat()
