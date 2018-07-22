@@ -98,7 +98,7 @@ def model_fn(features, labels, mode, params):
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_images = model.generator_wavegan(random_noise,
                                      train=is_training)
-  
+
   # Get logits from discriminator
   d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_images, reuse=False))
   d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_images, reuse=True))
@@ -244,6 +244,7 @@ def main(argv):
   current_step = estimator._load_global_step_from_checkpoint_dir(FLAGS.model_dir)   # pylint: disable=protected-access,line-too-long
   tf.logging.info('Starting training for %d steps, current step: %d' %
                   (FLAGS.train_steps, current_step))
+  """
   while current_step < FLAGS.train_steps:
     next_checkpoint = min(current_step + FLAGS.train_steps_per_eval,
                           FLAGS.train_steps)
@@ -258,7 +259,7 @@ def main(argv):
                              steps=dataset.NUM_EVAL_IMAGES // FLAGS.batch_size)
       tf.logging.info('Finished evaluating')
       tf.logging.info(metrics)
-    """
+
     # Render some generated images
     generated_iter = cpu_est.predict(input_fn=noise_input_fn)
     images = [p['generated_images'][:, :, :] for p in generated_iter]
@@ -275,7 +276,7 @@ def main(argv):
                      'generated_images', 'gen_%s.png' % (step_string)), 'w')
     img.save(file_obj, format='png')
     tf.logging.info('Finished generating images')
-    """
+  """
 
 if __name__ == '__main__':
   tf.logging.set_verbosity(tf.logging.INFO)
