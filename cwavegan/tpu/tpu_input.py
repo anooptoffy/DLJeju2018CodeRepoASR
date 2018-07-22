@@ -77,7 +77,7 @@ class InputFunction(object):
 
     data_files = np.array([])
     for i in range(128):
-      data_file = 'train-{}-of-128.tfrecord'.format(str(i).zfill(len(3)))
+      data_file = 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
       data_files = np.vstack((data_files, data_file))
     print(data_files)
     assert False
