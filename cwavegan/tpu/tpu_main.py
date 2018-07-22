@@ -249,7 +249,7 @@ def main(argv):
     next_checkpoint = min(current_step + FLAGS.train_steps_per_eval,
                           FLAGS.train_steps)
     #est.train(input_fn=generate_input_fn(True),
-              max_steps=next_checkpoint)
+    #         max_steps=next_checkpoint)
     current_step = next_checkpoint
     tf.logging.info('Finished training step %d' % current_step)
 
