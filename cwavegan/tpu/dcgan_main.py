@@ -95,7 +95,6 @@ def model_fn(features, labels, mode, params):
 
   # concatenate
   #label_fill = tf.expand_dims(labels, axis=2)
-  labels = tf.cast(labels, dtype=tf.float32)
   print(labels)
   print(random_noise)
   print(real_images)
