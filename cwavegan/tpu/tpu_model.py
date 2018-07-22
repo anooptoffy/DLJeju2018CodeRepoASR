@@ -149,7 +149,7 @@ def discriminator(
   else:
     phaseshuffle = lambda x: x
 
-  with tf.variable_scope('discriminator_0'):
+  with tf.variable_scope('discriminator_0', reuse=tf.AUTO_REUSE):
     # Layer 0
     # [16384, 1] -> [4096, 64]
     output = x
