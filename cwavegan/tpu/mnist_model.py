@@ -82,11 +82,8 @@ def discriminator1(x, is_training=True, scope='Discriminator'):
     w_init = tf.truncated_normal_initializer(mean=0.0, stddev=0.02)
     b_init = tf.constant_initializer(0.0)
 
-    # concat layer
-    cat1 = tf.concat([x, y_fill], 3)
-
     # 1st hidden layer
-    conv1 = tf.layers.conv2d(cat1, 128, [5, 5], strides=(2, 2), padding='same', kernel_initializer=w_init, bias_initializer=b_init)
+    conv1 = tf.layers.conv2d(x, 128, [5, 5], strides=(2, 2), padding='same', kernel_initializer=w_init, bias_initializer=b_init)
     lrelu1 = lrelu(conv1, 0.2)
 
     # 2nd hidden layer
