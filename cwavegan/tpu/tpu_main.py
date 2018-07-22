@@ -129,16 +129,14 @@ def model_fn(features, labels, mode, params):
       d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
       g_optimizer = tf.contrib.tpu.CrossShardOptimizer(g_optimizer)
 
-    print('update ops', tf.GraphKeys.UPDATE_OPS)
     with tf.control_dependencies(tf.get_collection(tf.GraphKeys.UPDATE_OPS)):
-      print('global variables', tf.GraphKeys.GLOBAL_VARIABLES)
       d_step = d_optimizer.minimize(
           d_loss,
-          var_list=tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,
+          var_list=tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
                                      scope='Discriminator'))
       g_step = g_optimizer.minimize(
           g_loss,
-          var_list=tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,
+          var_list=tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
                                      scope='Generator'))
 
       increment_step = tf.assign_add(tf.train.get_or_create_global_step(), 1)
