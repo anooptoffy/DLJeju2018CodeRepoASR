@@ -31,7 +31,8 @@ def conv1d_transpose(
         filters,
         kernel_width,
         1,
-        padding='same')
+        padding='same',
+        reuse=None)
   else:
     raise NotImplementedError
 
