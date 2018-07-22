@@ -79,9 +79,7 @@ class InputFunction(object):
     for i in range(128):
       data_file = 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
       data_files.append(data_file)
-    print(data_files)
-    assert False
-
+    
     dataset = tf.data.TFRecordDataset(data_files)
     dataset = dataset.map(parser).cache()
     if self.is_training:
