@@ -87,7 +87,7 @@ def model_fn(features, labels, mode, params):
 
   # Use params['batch_size'] for the batch size inside model_fn
   batch_size = params['batch_size']   # pylint: disable=unused-variable
-  real_images = features['real_images']
+  real_images = features['real_audio']
   random_noise = features['random_noise']
 
   # concatenate
