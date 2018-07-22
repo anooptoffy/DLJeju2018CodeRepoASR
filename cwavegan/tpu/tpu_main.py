@@ -101,8 +101,8 @@ def model_fn(features, labels, mode, params):
   generated_images = tf.concat([generated_images, label_fill], 1)
 
   # Get logits from discriminator
-  d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_images))
-  d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_images))
+  d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_images, reuse=False))
+  d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_images, reuse=True))
 
   # Calculate discriminator loss
   d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
