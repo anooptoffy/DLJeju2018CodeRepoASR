@@ -76,6 +76,27 @@ def discriminator(x, is_training=True, scope='Discriminator'):
 
     return x
 
+def discriminator1(x, is_training=True, scope='Discriminator'):
+  with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):
+    # initializer
+    w_init = tf.truncated_normal_initializer(mean=0.0, stddev=0.02)
+    b_init = tf.constant_initializer(0.0)
+
+    # concat layer
+    cat1 = tf.concat([x, y_fill], 3)
+
+    # 1st hidden layer
+    conv1 = tf.layers.conv2d(cat1, 128, [5, 5], strides=(2, 2), padding='same', kernel_initializer=w_init, bias_initializer=b_init)
+    lrelu1 = lrelu(conv1, 0.2)
+
+    # 2nd hidden layer
+    conv2 = tf.layers.conv2d(lrelu1, 256, [5, 5], strides=(2, 2), padding='same', kernel_initializer=w_init, bias_initializer=b_init)
+    lrelu2 = lrelu(tf.layers.batch_normalization(conv2, training=isTrain), 0.2)
+
+    # output layer
+    conv3 = tf.layers.conv2d(lrelu2, 1, [7, 7], strides=(1, 1), padding='valid', kernel_initializer=w_init)
+    
+    return conv3
 
 def generator(x, is_training=True, scope='Generator'):
   # fc1024-bn-relu + fc6272-bn-relu + deconv64-bn-relu + deconv1-tanh
