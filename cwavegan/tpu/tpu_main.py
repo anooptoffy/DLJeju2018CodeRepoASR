@@ -53,8 +53,8 @@ flags.DEFINE_integer('noise_dim', 90,
 flags.DEFINE_integer('batch_size', 1024,
                      'Batch size for both generator and discriminator')
 flags.DEFINE_integer('num_shards', None, 'Number of TPU chips')
-flags.DEFINE_integer('train_steps', 10000, 'Number of training steps')
-flags.DEFINE_integer('train_steps_per_eval', 1000,
+flags.DEFINE_integer('train_steps', 200, 'Number of training steps')
+flags.DEFINE_integer('train_steps_per_eval', 4000,
                      'Steps per eval and image generation')
 flags.DEFINE_integer('iterations_per_loop', 100,
                      'Steps per interior TPU loop. Should be less than'
@@ -79,8 +79,9 @@ def model_fn(features, labels, mode, params):
     ###########
     # Pass only noise to PREDICT mode
     random_noise = features['random_noise']
+    random_noise = tf.concat([random_noise, labels], 1)
     predictions = {
-        'generated_images': model.generator_wavegan(random_noise, is_training=False)
+        'generated_images': model.generator_wavegan(random_noise, train=False)
     }
 
     return tf.contrib.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
