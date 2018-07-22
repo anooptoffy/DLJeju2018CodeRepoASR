@@ -26,8 +26,6 @@ import absl.logging as _logging  # pylint: disable=unused-import
 import numpy as np
 import tensorflow as tf
 
-import cifar_input
-import cifar_model
 import mnist_input
 import mnist_model
 from tensorflow.python.estimator import estimator
