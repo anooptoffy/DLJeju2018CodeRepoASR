@@ -34,17 +34,12 @@ NUM_EVAL_AUDIO = 10000
 
 
 def parser(serialized_example):
-  features = tf.parse_single_example(
-      serialized_example,
-      features={
-          'samples': tf.FixedLenFeature([1], tf.float32, allow_missing=True),
-          'label': tf.FixedLenFeature([], tf.float32, allow_missing=True)
-      })
-
+  features = {'samples': tf.FixedLenSequenceFeature([1], tf.float32, allow_missing=True)}
+  if True:
+    features['label'] = tf.FixedLenSequenceFeature([], tf.float32, allow_missing=True)
+  
   example = tf.parse_single_example(serialized_example, features)
   wav = example['samples']
-  #     if labels:
-  #       label = tf.reduce_join(example['label'], 0)
   label = example['label']
 
   # Select random window
