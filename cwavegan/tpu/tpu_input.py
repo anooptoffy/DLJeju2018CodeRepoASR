@@ -75,6 +75,9 @@ class InputFunction(object):
 
     batch_size = params['batch_size']
 
+    print(self.data_file)
+    assert False
+
     dataset = tf.data.TFRecordDataset(self.data_file)
     dataset = dataset.map(parser).cache()
     if self.is_training:
