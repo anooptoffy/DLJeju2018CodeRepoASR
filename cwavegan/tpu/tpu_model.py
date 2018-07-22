@@ -149,44 +149,40 @@ def discriminator(
   else:
     phaseshuffle = lambda x: x
 
-  # Layer 0
-  # [16384, 1] -> [4096, 64]
-  output = x
-  with tf.variable_scope('downconv_0', reuse=tf.AUTO_REUSE):
-    output = tf.layers.conv1d(output, dim, kernel_len, 4, padding='SAME')
-  output = lrelu(output)
-  output = phaseshuffle(output)
+  with tf.variable_scope('discriminator_0'):
+    # Layer 0
+    # [16384, 1] -> [4096, 64]
+    output = x
+    output = tf.layers.conv1d(output, dim, kernel_len, 4, padding='SAME', reuse=True, name='downconv_0')
+    output = lrelu(output)
+    output = phaseshuffle(output)
 
-  # Layer 1
-  # [4096, 64] -> [1024, 128]
-  with tf.variable_scope('downconv_1'):
-    output = tf.layers.conv1d(output, dim * 2, kernel_len, 4, padding='SAME')
+    # Layer 1
+    # [4096, 64] -> [1024, 128]
+    output = tf.layers.conv1d(output, dim * 2, kernel_len, 4, padding='SAME', name='downconv_1')
     output = batchnorm(output)
-  output = lrelu(output)
-  output = phaseshuffle(output)
+    output = lrelu(output)
+    output = phaseshuffle(output)
 
-  # Layer 2
-  # [1024, 128] -> [256, 256]
-  with tf.variable_scope('downconv_2'):
-    output = tf.layers.conv1d(output, dim * 4, kernel_len, 4, padding='SAME')
+    # Layer 2
+    # [1024, 128] -> [256, 256]
+    output = tf.layers.conv1d(output, dim * 4, kernel_len, 4, padding='SAME', name='downconv_2')
     output = batchnorm(output)
-  output = lrelu(output)
-  output = phaseshuffle(output)
+    output = lrelu(output)
+    output = phaseshuffle(output)
 
-  # Layer 3
-  # [256, 256] -> [64, 512]
-  with tf.variable_scope('downconv_3'):
-    output = tf.layers.conv1d(output, dim * 8, kernel_len, 4, padding='SAME')
+    # Layer 3
+    # [256, 256] -> [64, 512]
+    output = tf.layers.conv1d(output, dim * 8, kernel_len, 4, padding='SAME', name='downconv_3')
     output = batchnorm(output)
-  output = lrelu(output)
-  output = phaseshuffle(output)
+    output = lrelu(output)
+    output = phaseshuffle(output)
 
-  # Layer 4
-  # [64, 512] -> [16, 1024]
-  with tf.variable_scope('downconv_4'):
-    output = tf.layers.conv1d(output, dim * 16, kernel_len, 4, padding='SAME')
+    # Layer 4
+    # [64, 512] -> [16, 1024]
+    output = tf.layers.conv1d(output, dim * 16, kernel_len, 4, padding='SAME', name='downconv_4')
     output = batchnorm(output)
-  output = lrelu(output)
+    output = lrelu(output)
 
   # Flatten
   output = tf.reshape(output, [batch_size, 4 * 4 * dim * 16])
