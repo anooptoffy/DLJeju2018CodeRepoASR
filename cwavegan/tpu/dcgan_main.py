@@ -97,18 +97,15 @@ def model_fn(features, labels, mode, params):
   label_fill = tf.reshape(labels, [batch_size, 1, 1, 10])
   label_fill = label_fill * np.ones([batch_size, 28, 28, 10])
   random_noise = tf.concat([random_noise, labels], 1)
-  print(real_images)
   real_images = tf.concat([real_images, label_fill], 3)
-  print(real_images)
-  assert False
 
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_images = model.generator(random_noise,
                                      is_training=is_training)
 
   # Get logits from discriminator
-  d_on_data_logits = tf.squeeze(model.discriminator(real_images))
-  d_on_g_logits = tf.squeeze(model.discriminator(generated_images))
+  d_on_data_logits = tf.squeeze(model.discriminator1(real_images))
+  d_on_g_logits = tf.squeeze(model.discriminator1(generated_images))
 
   # Calculate discriminator loss
   d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
