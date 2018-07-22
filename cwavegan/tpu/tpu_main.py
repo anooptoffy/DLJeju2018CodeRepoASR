@@ -72,8 +72,6 @@ model = None
 
 
 def model_fn(features, labels, mode, params):
-  tf.reset_default_graph()
-  
   if mode == tf.estimator.ModeKeys.PREDICT:
     # Pass only noise to PREDICT mode
     random_noise = features['random_noise']
