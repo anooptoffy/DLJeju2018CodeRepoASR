@@ -32,7 +32,7 @@ def conv1d_transpose(
         kernel_width,
         1,
         padding='same',
-        reuse=None)
+        reuse=tf.AUTO_REUSE)
   else:
     raise NotImplementedError
 
