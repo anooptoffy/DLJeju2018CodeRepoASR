@@ -79,7 +79,7 @@ class InputFunction(object):
     dataset = dataset.map(parser).cache()
     if self.is_training:
         dataset = dataset.repeat()
-    dataset = dataset.shuffle(1024)
+    dataset = dataset.shuffle(8192)
     dataset = dataset.apply(tf.contrib.data.batch_and_drop_remainder(batch_size))
     wav, labels = dataset.make_one_shot_iterator().get_next()
 
@@ -87,8 +87,7 @@ class InputFunction(object):
 
     features = {
         'real_audio': wav,
-        'random_noise': random_noise,
-        'label': labels}
+        'random_noise': random_noise}
 
     return features, labels
 
