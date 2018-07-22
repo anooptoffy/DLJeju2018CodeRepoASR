@@ -26,7 +26,7 @@ import tensorflow as tf
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('data_file', 'gs://sc09_tf', 'Training .tfrecord data file')
+flags.DEFINE_string('data_file', 'gs://sc09_tf/', 'Training .tfrecord data file')
 
 window_len = 16374
 NUM_TRAIN_AUDIO = 60000
@@ -77,9 +77,9 @@ class InputFunction(object):
 
     data_files = []
     for i in range(128):
-      data_file = 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
+      data_file = FLAG.data_file + 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
       data_files.append(data_file)
-    
+
     dataset = tf.data.TFRecordDataset(data_files)
     dataset = dataset.map(parser).cache()
     if self.is_training:
