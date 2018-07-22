@@ -48,7 +48,7 @@ def parser(serialized_example):
   image = tf.cast(image, tf.float32) * (2.0 / 255) - 1.0
 
   label = features['label']
-  for sess as tf.Session():
+  with sess as tf.Session():
     print(sess.run(label))
   print("here", label)
   print("here", image)
