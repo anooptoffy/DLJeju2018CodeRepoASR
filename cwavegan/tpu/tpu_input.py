@@ -76,7 +76,7 @@ class InputFunction(object):
     batch_size = params['batch_size']
 
     data_files = np.array([])
-    for i in len(128):
+    for i in range(128):
       data_file = 'train-{}-of-128.tfrecord'.format(str(i).zfill(len(3)))
       data_files = np.vstack((data_files, data_file))
     print(data_files)
