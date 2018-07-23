@@ -267,8 +267,7 @@ def main(argv):
       use_tpu=FLAGS.use_tpu,
       config=config,
       train_batch_size=FLAGS.batch_size,
-      eval_batch_size=FLAGS.batch_size,
-      host_call = host_call_fn)
+      eval_batch_size=FLAGS.batch_size)
 
   # CPU-based estimator used for PREDICT (generating images)
   cpu_est = tf.contrib.tpu.TPUEstimator(
