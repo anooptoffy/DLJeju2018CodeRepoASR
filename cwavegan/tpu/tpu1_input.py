@@ -72,6 +72,8 @@ class InputFunction(object):
   def __call__(self, params):
     """Creates a simple Dataset pipeline."""
 
+    batch_size = params['batch_size']
+    
     data_files = []
     for i in range(128):
       data_file = FLAGS.data_file + 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
