@@ -162,44 +162,59 @@ def generator_wavegan(
         # [100] -> [16, 1024]
         output = z
         with tf.variable_scope('z_project'):
+            print(output)
             output = tf.layers.dense(output, 4 * 4 * dim * 16)
+            print(output)
             output = tf.reshape(output, [batch_size, 16, dim * 16])
+            print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
+        print(output)
 
         # Layer 0
         # [16, 1024] -> [64, 512]
         with tf.variable_scope('upconv_0'):
             output = conv1d_transpose(output, dim * 8, kernel_len, 4, upsample=upsample)
+            print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
+        print(output)
 
         # Layer 1
         # [64, 512] -> [256, 256]
         with tf.variable_scope('upconv_1'):
             output = conv1d_transpose(output, dim * 4, kernel_len, 4, upsample=upsample)
+            print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
+        print(output)
 
         # Layer 2
         # [256, 256] -> [1024, 128]
         with tf.variable_scope('upconv_2'):
             output = conv1d_transpose(output, dim * 2, kernel_len, 4, upsample=upsample)
+            print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
+        print(output)
 
         # Layer 3
         # [1024, 128] -> [4096, 64]
         with tf.variable_scope('upconv_3'):
             output = conv1d_transpose(output, dim, kernel_len, 4, upsample=upsample)
+            print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
+        print(output)
 
         # Layer 4
         # [4096, 64] -> [16384, 1]
         with tf.variable_scope('upconv_4'):
             output = conv1d_transpose(output, 1, kernel_len, 4, upsample=upsample)
+            print(output)
         output = tf.nn.tanh(output)
+        print(output)
+        assert False
 
         # Automatically update batchnorm moving averages every time G is used during training
         if train and use_batchnorm:
