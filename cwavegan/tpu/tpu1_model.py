@@ -102,7 +102,7 @@ def discriminator_wavegan(
             output = x
             output = tf.layers.conv1d(output, dim, kernel_len, 4, padding='SAME', name='downconv_0')
             bias = tf_repeat(labels, batch_size, 4096, dim)
-            output = output + bias
+            output = output * bias
             output = lrelu(output)
             output = phaseshuffle(output)
 
@@ -110,7 +110,7 @@ def discriminator_wavegan(
             # [4096, 64] -> [1024, 128]
             output = tf.layers.conv1d(output, dim * 2, kernel_len, 4, padding='SAME', name='downconv_1')
             bias = tf_repeat(labels, batch_size, 1024, dim * 2)
-            output = output + bias
+            output = output * bias
             output = batchnorm(output)
             output = lrelu(output)
             output = phaseshuffle(output)
@@ -119,7 +119,7 @@ def discriminator_wavegan(
             # [1024, 128] -> [256, 256]
             output = tf.layers.conv1d(output, dim * 4, kernel_len, 4, padding='SAME', name='downconv_2')
             bias = tf_repeat(labels, batch_size, 256, dim * 4)
-            output = output + bias
+            output = output * bias
             output = batchnorm(output)
             output = lrelu(output)
             output = phaseshuffle(output)
