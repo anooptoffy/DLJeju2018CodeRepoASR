@@ -194,7 +194,7 @@ def generator_wavegan(
         output = tf.nn.relu(output)
 
         # Layer 4
-        # [4096, 64] -> [16384, 1]
+        # [4096, 64] -> [8192, 1]
         with tf.variable_scope('upconv_4'):
             #output = conv1d_transpose(output, 1, kernel_len, 4, upsample=upsample)
             output = conv1d_transpose(output, 1, kernel_len, 2, upsample=upsample)

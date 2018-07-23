@@ -21,14 +21,14 @@ from __future__ import print_function
 import glob, os
 from absl import flags
 import numpy as np
-from PIL import Image
+#from PIL import Image
 import tensorflow as tf
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('data_file', 'gs://sc09_tf/', 'Training .tfrecord data file')
+flags.DEFINE_string('data_file', 'gs://wavegan_tfrecords/', 'Training .tfrecord data file')
 
-window_len = 16374
+window_len = 8182  #16384
 NUM_TRAIN_AUDIO = 60000
 NUM_EVAL_AUDIO = 10000
 
@@ -42,16 +42,9 @@ def parser(serialized_example):
   wav = example['samples']
   label = example['label']
 
-  # Select random window
-  wav_len = tf.shape(wav)[0]
-
-  start_max = wav_len - window_len
-  start_max = tf.maximum(start_max, 0)
-
-  start = tf.random_uniform([], maxval=start_max + 1, dtype=tf.int32)
-
-  wav = wav[start:start + window_len]
-
+  # first window
+  wav = wav[:window_len]
+  
   wav = tf.pad(wav, [[0, window_len - tf.shape(wav)[0]], [0, 0]])
 
   wav.set_shape([window_len, 1])

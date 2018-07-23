@@ -26,8 +26,8 @@ import absl.logging as _logging  # pylint: disable=unused-import
 import numpy as np
 import tensorflow as tf
 
-import tpu1_input
-import tpu1_model
+import bias_input
+import bias_model
 from tensorflow.contrib import summary
 from tensorflow.python.estimator import estimator
 
@@ -48,7 +48,7 @@ flags.DEFINE_string(
     'will attempt to automatically detect the GCE project from metadata.')
 
 # Model specific paramenters
-flags.DEFINE_string('model_dir', 'gs://acheketa-ckpt-1', 'Output model directory')
+flags.DEFINE_string('model_dir', 'gs://acheketa1-ckpt', 'Output model directory')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
 flags.DEFINE_integer('batch_size', 1024,
@@ -247,8 +247,8 @@ def main(argv):
   # Set module-level global variable so that model_fn and input_fn can be
   # identical for each different kind of dataset and model
   global dataset, model
-  dataset = tpu1_input
-  model = tpu1_model
+  dataset = bias_input
+  model = bias_model
   
   # TPU-based estimator used for TRAIN and EVAL
   est = tf.contrib.tpu.TPUEstimator(
