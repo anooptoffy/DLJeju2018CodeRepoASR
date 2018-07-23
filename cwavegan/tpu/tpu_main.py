@@ -151,7 +151,9 @@ def model_fn(features, labels, mode, params):
 
   if mode != tf.estimator.ModeKeys.PREDICT:
     global_step = tf.reshape(tf.train.get_global_step(), [1])
-    host_call = (host_call_fn, [global_step, g_loss, d_loss, real_audio, generated_audio])
+    g_loss_t = g_loss
+    d_loss_t = d_loss
+    host_call = (host_call_fn, [global_step, g_loss_t, d_loss_t, real_audio, generated_audio])
 
 
   if mode == tf.estimator.ModeKeys.TRAIN:
