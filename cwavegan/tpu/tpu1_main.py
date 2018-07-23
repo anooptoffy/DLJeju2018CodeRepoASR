@@ -49,7 +49,7 @@ flags.DEFINE_string(
 
 # Model specific paramenters
 flags.DEFINE_string('model_dir', 'gs://acheketa-ckpt', 'Output model directory')
-flags.DEFINE_integer('noise_dim', 90,
+flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
 flags.DEFINE_integer('batch_size', 1024,
                      'Batch size for both generator and discriminator')
@@ -102,7 +102,6 @@ def model_fn(features, labels, mode, params):
             summary.audio('generated_audio', generated_audio, sample_rate=_FS, max_outputs=1, step=gs)
     return summary.all_summary_ops()
 
-  """Constructs DCGAN from individual generator and discriminator networks."""
   if mode == tf.estimator.ModeKeys.PREDICT:
     ###########
     # PREDICT #
@@ -110,29 +109,22 @@ def model_fn(features, labels, mode, params):
     # Pass only noise to PREDICT mode
     random_noise = features['random_noise']
     predictions = {
-        'generated_audio': model.generator_wavegan(random_noise, train=False)
+        'generated_audio': model.generator_wavegan(random_noise, labels, train=False)
     }
 
     return tf.contrib.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
-
 
   # Use params['batch_size'] for the batch size inside model_fn
   batch_size = params['batch_size']   # pylint: disable=unused-variable
   real_audio = features['real_audio']
   random_noise = features['random_noise']
 
-  # concatenate
-  label_fill = tf.expand_dims(labels, axis=2)
-  random_noise = tf.concat([random_noise, labels], 1)
-  real_audio = tf.concat([real_audio, label_fill], 1)
-
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
-  generated_audio = model.generator_wavegan(random_noise,
-                                     train=is_training)
+  generated_audio = model.generator_wavegan(random_noise, labels, train=is_training)
 
   # Get logits from discriminator
-  d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_audio, reuse=False))
-  d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, reuse=True))
+  d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_audio, labels, reuse=False))
+  d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, labels, reuse=True))
 
   # Calculate discriminator loss
   d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
@@ -230,18 +222,11 @@ def noise_input_fn(params):
   Returns:
     1-element `dict` containing the randomly generated noise.
   """
-  # one-hot vector
-  one_hot = np.zeros([_NUM_VIZ_AUDIO, _D_Y])
-  for i in range(10):
-      one_hot[2 * i + 1][i] = 1
-      one_hot[2 * i][i] = 1
-
   # random noise
   np.random.seed(0)
   noise_dataset = tf.data.Dataset.from_tensors(tf.constant(
       np.random.randn(params['batch_size'], FLAGS.noise_dim), dtype=tf.float32))
   noise = noise_dataset.make_one_shot_iterator().get_next()
-  noise = tf.concat([noise, one_hot], 1)
   return {'random_noise': noise}, None
 
 
@@ -262,8 +247,8 @@ def main(argv):
   # Set module-level global variable so that model_fn and input_fn can be
   # identical for each different kind of dataset and model
   global dataset, model
-  dataset = tpu_input
-  model = tpu_model
+  dataset = tpu1_input
+  model = tpu1_model
   
   # TPU-based estimator used for TRAIN and EVAL
   est = tf.contrib.tpu.TPUEstimator(
@@ -279,8 +264,6 @@ def main(argv):
       use_tpu=False,
       config=config,
       predict_batch_size=_NUM_VIZ_AUDIO)
-
-  tf.gfile.MakeDirs(os.path.join(FLAGS.model_dir, 'generated_images'))
 
   current_step = estimator._load_global_step_from_checkpoint_dir(FLAGS.model_dir)   # pylint: disable=protected-access,line-too-long
   tf.logging.info('Starting training for %d steps, current step: %d' %
@@ -301,27 +284,6 @@ def main(argv):
       tf.logging.info('Finished evaluating')
       tf.logging.info(metrics)
 
-    """
-    # Render some generated speech
-    generated_iter = cpu_est.predict(input_fn=noise_input_fn)
-    audio = [p['generated_audio'][:, :, :] for p in generated_iter]
-    assert len(audio) == _NUM_VIZ_AUDIO
-    print(audio)
-    assert False
-
-    image_rows = [np.concatenate(images[i:i+10], axis=0)
-                  for i in range(0, _NUM_VIZ_AUDIO, 10)]
-    tiled_image = np.concatenate(image_rows, axis=1)
-
-    img = dataset.convert_array_to_image(tiled_image)
-
-    step_string = str(current_step).zfill(5)
-    file_obj = tf.gfile.Open(
-        os.path.join(FLAGS.model_dir,
-                     'generated_images', 'gen_%s.png' % (step_string)), 'w')
-    img.save(file_obj, format='png')
-    tf.logging.info('Finished generating images')
-    """
 
 if __name__ == '__main__':
   tf.logging.set_verbosity(tf.logging.INFO)

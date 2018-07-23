@@ -26,9 +26,9 @@ import tensorflow as tf
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('data_file', 'gs://sc09_tf/', 'Training .tfrecord data file')
+flags.DEFINE_string('data_file', 'gs://sc09_tf_int/', 'Training .tfrecord data file')
 
-window_len = 16374
+window_len = 16384
 NUM_TRAIN_AUDIO = 60000
 NUM_EVAL_AUDIO = 10000
 
@@ -36,7 +36,7 @@ NUM_EVAL_AUDIO = 10000
 def parser(serialized_example):
   features = {'samples': tf.FixedLenSequenceFeature([1], tf.float32, allow_missing=True)}
   if True:
-    features['label'] = tf.FixedLenSequenceFeature([], tf.float32, allow_missing=True)
+    features['label'] = tf.FixedLenSequenceFeature([], tf.int64, allow_missing=True)
   
   example = tf.parse_single_example(serialized_example, features)
   wav = example['samples']
@@ -55,7 +55,6 @@ def parser(serialized_example):
   wav = tf.pad(wav, [[0, window_len - tf.shape(wav)[0]], [0, 0]])
 
   wav.set_shape([window_len, 1])
-  label.set_shape(10)
 
   return wav, label
 
@@ -95,10 +94,3 @@ class InputFunction(object):
         'random_noise': random_noise}
 
     return features, labels
-
-
-def convert_array_to_image(array):
-  """Converts a numpy array to a PIL Image and undoes any rescaling."""
-  array = array[:, :, 0]
-  img = Image.fromarray(np.uint8((array + 1.0) / 2.0 * 255), mode='L')
-  return img
