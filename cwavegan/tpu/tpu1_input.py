@@ -18,6 +18,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import glob, os
 from absl import flags
 import numpy as np
 from PIL import Image
@@ -25,32 +26,38 @@ import tensorflow as tf
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('mnist_train_data_file', 'gs://mnist-train/train.tfrecords', 'Training .tfrecord data file')
-flags.DEFINE_string('mnist_test_data_file', 'gs://mnist-train/test.tfrecords', 'Test .tfrecord data file')
+flags.DEFINE_string('data_file', 'gs://sc09_tf/', 'Training .tfrecord data file')
 
-NUM_TRAIN_IMAGES = 60000
-NUM_EVAL_IMAGES = 10000
+window_len = 16374
+NUM_TRAIN_AUDIO = 60000
+NUM_EVAL_AUDIO = 10000
 
 
 def parser(serialized_example):
-  """Parses a single Example into image and label tensors."""
-  features = tf.parse_single_example(
-      serialized_example,
-      features={
-          'image_raw': tf.FixedLenFeature([], tf.string),
-          'label': tf.FixedLenSequenceFeature([], tf.float32, allow_missing=True)   # label is unused
-      })
-  image = tf.decode_raw(features['image_raw'], tf.uint8)
-  image.set_shape([28 * 28])
-  image = tf.reshape(image, [28, 28, 1])
+  features = {'samples': tf.FixedLenSequenceFeature([1], tf.float32, allow_missing=True)}
+  if True:
+    features['label'] = tf.FixedLenSequenceFeature([], tf.float32, allow_missing=True)
+  
+  example = tf.parse_single_example(serialized_example, features)
+  wav = example['samples']
+  label = example['label']
 
-  # Normalize the values of the image from [0, 255] to [-1.0, 1.0]
-  image = tf.cast(image, tf.float32) * (2.0 / 255) - 1.0
+  # Select random window
+  wav_len = tf.shape(wav)[0]
 
-  label = features['label']
+  start_max = wav_len - window_len
+  start_max = tf.maximum(start_max, 0)
+
+  start = tf.random_uniform([], maxval=start_max + 1, dtype=tf.int32)
+
+  wav = wav[start:start + window_len]
+
+  wav = tf.pad(wav, [[0, window_len - tf.shape(wav)[0]], [0, 0]])
+
+  wav.set_shape([window_len, 1])
   label.set_shape(10)
 
-  return image, label
+  return wav, label
 
 
 class InputFunction(object):
@@ -59,28 +66,32 @@ class InputFunction(object):
   def __init__(self, is_training, noise_dim):
     self.is_training = is_training
     self.noise_dim = noise_dim
-    self.data_file = (FLAGS.mnist_train_data_file if is_training
-                      else FLAGS.mnist_test_data_file)
+    mode = ('train' if is_training
+            else 'test')
+    self.data_file = glob.glob(os.path.join(FLAGS.data_file, mode) + '*.tfrecord')
 
   def __call__(self, params):
     """Creates a simple Dataset pipeline."""
 
     batch_size = params['batch_size']
-    dataset = tf.data.TFRecordDataset(self.data_file)
+
+    data_files = []
+    for i in range(128):
+      data_file = FLAGS.data_file + 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
+      data_files.append(data_file)
+
+    dataset = tf.data.TFRecordDataset(data_files)
     dataset = dataset.map(parser).cache()
     if self.is_training:
-      dataset = dataset.repeat()
+        dataset = dataset.repeat()
     dataset = dataset.shuffle(1024)
-    dataset = dataset.prefetch(batch_size)
-    dataset = dataset.apply(
-        tf.contrib.data.batch_and_drop_remainder(batch_size))
-    dataset = dataset.prefetch(2)    # Prefetch overlaps in-feed with training
-    images, labels = dataset.make_one_shot_iterator().get_next()
+    dataset = dataset.apply(tf.contrib.data.batch_and_drop_remainder(batch_size))
+    wav, labels = dataset.make_one_shot_iterator().get_next()
 
-    random_noise = tf.random_normal([batch_size, self.noise_dim])
+    random_noise = tf.random_uniform([batch_size, self.noise_dim], -1., 1., dtype=tf.float32)
 
     features = {
-        'real_images': images,
+        'real_audio': wav,
         'random_noise': random_noise}
 
     return features, labels
