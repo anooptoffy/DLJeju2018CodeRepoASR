@@ -151,10 +151,9 @@ def model_fn(features, labels, mode, params):
     print("g_loss", g_loss)
     print("d_loss",d_loss)
     print("globa_step",global_step)
-    assert False
     g_loss_t = tf.reshape(g_loss, [1])
     d_loss_t = tf.reshape(d_loss, [1])
-    host_call = (host_call_fn, [global_step[0], g_loss_t[0], d_loss_t[0], real_audio, generated_audio])
+    host_call = (host_call_fn, [global_step[0], g_loss, d_loss, real_audio, generated_audio])
 
 
   if mode == tf.estimator.ModeKeys.TRAIN:
