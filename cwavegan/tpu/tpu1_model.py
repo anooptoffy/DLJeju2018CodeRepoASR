@@ -29,11 +29,8 @@ def tf_repeat(idx, dim1, dim2):
     # tensor equivalent of np.repeat
     # 1d to 3d array tensor
     idx = tf.reshape(idx, [128, 1])
-    print("1", idx)
     idx = tf.tile(idx, [1, dim1 * dim2])
-    print("2", idx)
     idx = tf.reshape(idx, [-1, dim1, dim2])
-    print("3", idx)
     return idx
 
 def conv1d_transpose(
@@ -175,19 +172,17 @@ def generator_wavegan(
         with tf.variable_scope('z_project'):
             output = tf.layers.dense(output, 4 * 4 * dim * 16)
             output = tf.reshape(output, [batch_size, 16, dim * 16])
-            print("labels", labels)
             bias = tf_repeat(labels, 16, dim * 16)
-            print("here", bias)
             output = output + bias
             output = batchnorm(output)
         output = tf.nn.relu(output)
-        assert False
 
         # Layer 0
         # [16, 1024] -> [64, 512]
         with tf.variable_scope('upconv_0'):
             output = conv1d_transpose(output, dim * 8, kernel_len, 4, upsample=upsample)
-            output = tf.nn.bias_add(output, tf.reshape(labels, [dim * 8]))
+            bias = tf_repeat(labels, 64, dim * 8)
+            output = output + bias
             output = batchnorm(output)
         output = tf.nn.relu(output)
 
@@ -195,7 +190,8 @@ def generator_wavegan(
         # [64, 512] -> [256, 256]
         with tf.variable_scope('upconv_1'):
             output = conv1d_transpose(output, dim * 4, kernel_len, 4, upsample=upsample)
-            output = tf.nn.bias_add(output, tf.reshape(labels, [dim * 4]))
+            bias = tf_repeat(labels, 256, dim * 4)
+            output = output + bias
             output = batchnorm(output)
         output = tf.nn.relu(output)
 
@@ -203,7 +199,8 @@ def generator_wavegan(
         # [256, 256] -> [1024, 128]
         with tf.variable_scope('upconv_2'):
             output = conv1d_transpose(output, dim * 2, kernel_len, 4, upsample=upsample)
-            output = tf.nn.bias_add(output, tf.reshape(labels, [dim * 2]))
+            bias = tf_repeat(labels, 1024, dim * 2)
+            output = output + bias
             output = batchnorm(output)
         output = tf.nn.relu(output)
 
@@ -211,7 +208,8 @@ def generator_wavegan(
         # [1024, 128] -> [4096, 64]
         with tf.variable_scope('upconv_3'):
             output = conv1d_transpose(output, dim, kernel_len, 4, upsample=upsample)
-            output = tf.nn.bias_add(output, tf.reshape(labels, [dim]))
+            bias = tf_repeat(labels, 4096, dim)
+            output = output + bias
             output = batchnorm(output)
         output = tf.nn.relu(output)
 
@@ -219,7 +217,8 @@ def generator_wavegan(
         # [4096, 64] -> [16384, 1]
         with tf.variable_scope('upconv_4'):
             output = conv1d_transpose(output, 1, kernel_len, 4, upsample=upsample)
-            output = tf.nn.bias_add(output, labels)
+            bias = tf_repeat(labels, 16384, 1)
+            output = output + bias
         output = tf.nn.tanh(output)
 
         # Automatically update batchnorm moving averages every time G is used during training
