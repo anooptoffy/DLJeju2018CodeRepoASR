@@ -49,7 +49,7 @@ flags.DEFINE_string(
 
 # Model specific paramenters
 flags.DEFINE_string('model_dir', 'gs://acheketa1-ckpt', 'Output model directory')
-flags.DEFINE_string('loss', 'wgan-gp', 'wgan-gp or dcgan')
+flags.DEFINE_string('loss', 'dcgan', 'wgan-gp or dcgan')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
 flags.DEFINE_integer('batch_size', 1024,
@@ -61,7 +61,6 @@ flags.DEFINE_integer('train_steps_per_eval', 400,
 flags.DEFINE_integer('iterations_per_loop', 20,
                      'Steps per interior TPU loop. Should be less than'
                      ' --train_steps_per_eval')
-flags.DEFINE_float('learning_rate', 0.0002, 'LR for both D and G')
 flags.DEFINE_boolean('eval_loss', False,
                      'Evaluate discriminator and generator loss during eval')
 flags.DEFINE_boolean('use_tpu', True, 'Use TPU for training')
