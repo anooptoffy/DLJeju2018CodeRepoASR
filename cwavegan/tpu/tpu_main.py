@@ -98,8 +98,8 @@ def model_fn(features, labels, mode, params):
         with summary.always_record_summaries():
             summary.scalar('g_loss', g_loss, step=gs)
             summary.scalar('d_loss', d_loss, step=gs)
-            summary.audio('real_audio', real_audio, sample_rate=_FS, step=gs)
-            summary.audio('generated_audio', generated_audio, sample_rate=_FS, step=gs)
+            summary.audio('real_audio', real_audio, _FS, step=gs)
+            summary.audio('generated_audio', generated_audio, _FS, step=gs)
     return summary.all_summary_ops()
 
   """Constructs DCGAN from individual generator and discriminator networks."""
