@@ -91,6 +91,7 @@ def model_fn(features, labels, mode, params):
     Returns:
       List of summary ops to run on the CPU host.
     """
+    gs = gs[0]
     with summary.create_file_writer(FLAGS.model_dir + str(time.time()).zfill(5)).as_default():
         with summary.always_record_summaries():
             summary.scalar('g_loss', g_loss, step=gs)
@@ -151,8 +152,8 @@ def model_fn(features, labels, mode, params):
     print("global_step", global_step)
     print("g_loss", g_loss)
     print("d_loss", d_loss)
-    assert False
-    host_call = (host_call_fn, [global_step[0], g_loss, d_loss, real_audio, generated_audio])
+    #assert False
+    host_call = (host_call_fn, [global_step, g_loss, d_loss, real_audio, generated_audio])
 
 
   if mode == tf.estimator.ModeKeys.TRAIN:
