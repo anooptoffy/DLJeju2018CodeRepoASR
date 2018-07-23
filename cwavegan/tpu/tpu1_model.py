@@ -165,7 +165,7 @@ def generator_wavegan(
             output = tf.layers.dense(output, 4 * 4 * dim * 16)
             output = tf.reshape(output, [batch_size, 16, dim * 16])
             print("here", tf.reshape(labels, [dim*16]))
-            bias = tf.expand_dims(labels, 1)
+            bias = tf.reshape(labels, [128, 1])
             print("here", bias)
             print("here", tf.reshape(bias, [batch_size, dim * 16]))
             assert False
