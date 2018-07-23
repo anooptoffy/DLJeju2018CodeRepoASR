@@ -68,7 +68,7 @@ class InputFunction(object):
     batch_size = params['batch_size']
 
     data_files = []
-    for i in range(128):
+    for i in range(13):
       data_file = FLAGS.data_file + 'train-{}-of-128.tfrecord'.format(str(i).zfill(3))
       data_files.append(data_file)
 
