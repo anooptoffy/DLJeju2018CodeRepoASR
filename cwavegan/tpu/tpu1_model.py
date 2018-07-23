@@ -165,7 +165,7 @@ def generator_wavegan(
             output = tf.layers.dense(output, 4 * 4 * dim * 16)
             output = tf.reshape(output, [batch_size, 16, dim * 16])
             bias = tf.reshape(labels, [128, dim * 16])
-            output = tf.nn.bias_add(output, bias)
+            output = output * bias
             output = batchnorm(output)
         output = tf.nn.relu(output)
         assert False
