@@ -96,11 +96,11 @@ def model_fn(features, labels, mode, params):
   real_images = tf.concat([real_images, label_fill], 1)
 
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
-  generated_images = model.generator_wavegan(random_noise,
+  generated_images = model.generator_waegan(random_noise,
                                      train=is_training)
 
-  tf.summary.audio('real_audio', real_images, 16384)
-  tf.summary.audio('generated_audio', generated_images, 16374)
+  #tf.summary.audio('real_audio', real_images, 16384)
+  #tf.summary.audio('generated_audio', generated_images, 16374)
 
   # Get logits from discriminator
   d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_images, reuse=False))
