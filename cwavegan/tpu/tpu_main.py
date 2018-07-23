@@ -67,6 +67,7 @@ flags.DEFINE_boolean('use_tpu', True, 'Use TPU for training')
 
 _NUM_VIZ_AUDIO = 20   # For generating a 10x10 grid of generator samples
 _D_Y = 10   # label
+_FS = 16000
 
 # Global variables for data and model
 dataset = None
@@ -97,8 +98,8 @@ def model_fn(features, labels, mode, params):
         with summary.always_record_summaries():
             summary.scalar('g_loss', g_loss, step=gs)
             summary.scalar('d_loss', d_loss, step=gs)
-            summary.audio('real_audio', real_audio, 16384)
-            summary.audio('generated_audio', generated_audio, 16374)
+            summary.audio('real_audio', real_audio, sample_rate=_FS, step=gs)
+            summary.audio('generated_audio', generated_audio, sample_rate=_FS, step=gs)
     return summary.all_summary_ops()
 
   """Constructs DCGAN from individual generator and discriminator networks."""
@@ -150,10 +151,6 @@ def model_fn(features, labels, mode, params):
 
   if mode != tf.estimator.ModeKeys.PREDICT:
     global_step = tf.reshape(tf.train.get_global_step(), [1])
-    print("global_step", global_step)
-    print("g_loss", g_loss)
-    print("d_loss", d_loss)
-    #assert False
     host_call = (host_call_fn, [global_step, g_loss, d_loss, real_audio, generated_audio])
 
 
