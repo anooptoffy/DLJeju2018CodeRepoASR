@@ -89,6 +89,8 @@ class InputFunction(object):
 
     random_noise = tf.random_uniform([batch_size, self.noise_dim], -1., 1., dtype=tf.float32)
     print(labels)
+    labels = labels + tf.constant(10, name='fixed')
+    print("here",labels)
     assert False
     features = {
         'real_audio': wav,
