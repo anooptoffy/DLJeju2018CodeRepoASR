@@ -136,7 +136,7 @@ def model_fn(features, labels, mode, params):
           logits=d_on_g_logits)
 
       d_loss = d_loss_on_data + d_loss_on_gen
-      d_loss = d_loss / 2
+      #d_loss = d_loss / 2
 
       # Calculate generator loss
       g_loss = tf.nn.sigmoid_cross_entropy_with_logits(
