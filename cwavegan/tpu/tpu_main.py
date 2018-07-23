@@ -64,7 +64,7 @@ flags.DEFINE_boolean('eval_loss', False,
                      'Evaluate discriminator and generator loss during eval')
 flags.DEFINE_boolean('use_tpu', True, 'Use TPU for training')
 
-_NUM_VIZ_IMAGES = 20   # For generating a 10x10 grid of generator samples
+_NUM_VIZ_AUDIO = 20   # For generating a 10x10 grid of generator samples
 _D_Y = 10   # label
 
 # Global variables for data and model
@@ -79,9 +79,8 @@ def model_fn(features, labels, mode, params):
     ###########
     # Pass only noise to PREDICT mode
     random_noise = features['random_noise']
-    random_noise = tf.concat([random_noise, labels], 1)
     predictions = {
-        'generated_images': model.generator_wavegan(random_noise, train=False)
+        'generated_audio': model.generator_wavegan(random_noise, train=False)
     }
 
     return tf.contrib.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
@@ -191,7 +190,7 @@ def noise_input_fn(params):
     1-element `dict` containing the randomly generated noise.
   """
   # one-hot vector
-  one_hot = np.zeros([_NUM_VIZ_IMAGES, _D_Y])
+  one_hot = np.zeros([_NUM_VIZ_AUDIO, _D_Y])
   for i in range(10):
       one_hot[2 * i + 1][i] = 1
       one_hot[2 * i][i] = 1
@@ -238,7 +237,7 @@ def main(argv):
       model_fn=model_fn,
       use_tpu=False,
       config=config,
-      predict_batch_size=_NUM_VIZ_IMAGES)
+      predict_batch_size=_NUM_VIZ_AUDIO)
 
   tf.gfile.MakeDirs(os.path.join(FLAGS.model_dir, 'generated_images'))
 
@@ -261,13 +260,16 @@ def main(argv):
       tf.logging.info('Finished evaluating')
       tf.logging.info(metrics)
 
-    """
-    # Render some generated images
+
+    # Render some generated speech
     generated_iter = cpu_est.predict(input_fn=noise_input_fn)
-    images = [p['generated_images'][:, :, :] for p in generated_iter]
-    assert len(images) == _NUM_VIZ_IMAGES
+    audio = [p['generated_audio'][:, :, :] for p in generated_iter]
+    assert len(audio) == _NUM_VIZ_AUDIO
+    print(audio)
+    assert False
+
     image_rows = [np.concatenate(images[i:i+10], axis=0)
-                  for i in range(0, _NUM_VIZ_IMAGES, 10)]
+                  for i in range(0, _NUM_VIZ_AUDIO, 10)]
     tiled_image = np.concatenate(image_rows, axis=1)
 
     img = dataset.convert_array_to_image(tiled_image)
@@ -278,7 +280,7 @@ def main(argv):
                      'generated_images', 'gen_%s.png' % (step_string)), 'w')
     img.save(file_obj, format='png')
     tf.logging.info('Finished generating images')
-    """
+
 
 if __name__ == '__main__':
   tf.logging.set_verbosity(tf.logging.INFO)
