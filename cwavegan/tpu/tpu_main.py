@@ -100,6 +100,9 @@ def model_fn(features, labels, mode, params):
   generated_images = model.generator_wavegan(random_noise,
                                      train=is_training)
 
+  tf.summary.audio('real_audio', real_images, 16384)
+  tf.summary.audio('generated_audio', generated_images, 16374)
+
   # Get logits from discriminator
   d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_images, reuse=False))
   d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_images, reuse=True))
@@ -118,6 +121,12 @@ def model_fn(features, labels, mode, params):
   g_loss = tf.nn.sigmoid_cross_entropy_with_logits(
       labels=tf.ones_like(d_on_g_logits),
       logits=d_on_g_logits)
+
+
+  tf.summary.scalar("Generator_loss", g_loss)
+  tf.summary.scalar("Real_Discriminator_loss", d_loss_on_data)
+  tf.summary.scalar("Fake_Discriminator_loss", d_loss_on_gen)
+
 
   if mode == tf.estimator.ModeKeys.TRAIN:
     #########
