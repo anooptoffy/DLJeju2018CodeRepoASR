@@ -118,9 +118,7 @@ def model_fn(features, labels, mode, params):
   batch_size = params['batch_size']   # pylint: disable=unused-variable
   real_audio = features['real_audio']
   random_noise = features['random_noise']
-  print(labels)
-  assert False
-
+  
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_audio = model.generator_wavegan(random_noise, labels, train=is_training)
 
