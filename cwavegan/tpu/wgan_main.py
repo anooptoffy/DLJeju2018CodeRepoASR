@@ -144,8 +144,8 @@ def model_fn(features, labels, mode, params):
 
     if mode != tf.estimator.ModeKeys.PREDICT:
         global_step = tf.reshape(tf.train.get_global_step(), [1])
-        g_loss_t = tf.tile(g_loss, [batch_size])
-        d_loss_t = tf.tile(d_loss, [batch_size])
+        g_loss_t = tf.tile(tf.reshape(g_loss, [1]), [batch_size])
+        d_loss_t = tf.tile(tf.reshape(d_loss, [1]), [batch_size])
         host_call = (host_call_fn, [global_step, g_loss_t, d_loss_t, real_audio, generated_audio])
 
     if mode == tf.estimator.ModeKeys.TRAIN:
