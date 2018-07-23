@@ -100,7 +100,10 @@ def discriminator_wavegan(
             # Layer 0
             # [16384, 1] -> [4096, 64]
             output = x
+            print(output)
             output = tf.layers.conv1d(output, dim, kernel_len, 4, padding='SAME', name='downconv_0')
+            print(output)
+            assert False
             output = lrelu(output)
             output = phaseshuffle(output)
 
