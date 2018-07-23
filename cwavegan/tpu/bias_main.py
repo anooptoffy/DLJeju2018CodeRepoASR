@@ -128,7 +128,7 @@ def model_fn(features, labels, mode, params):
   d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, labels, reuse=True))
 
   # Calculate discriminator loss
-  if loss == 'dcgan':
+  if FLAGS.loss == 'dcgan':
       d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
           labels=tf.ones_like(d_on_data_logits),
           logits=d_on_data_logits)
@@ -143,7 +143,7 @@ def model_fn(features, labels, mode, params):
       g_loss = tf.nn.sigmoid_cross_entropy_with_logits(
           labels=tf.ones_like(d_on_g_logits),
           logits=d_on_g_logits)
-  elif args.wavegan_loss == 'wgan-gp':
+  elif FLAGS.loss == 'wgan-gp':
     g_loss = -tf.reduce_mean(d_on_g_logits)
     d_loss = tf.reduce_mean(d_on_g_logits) - tf.reduce_mean(d_on_data_logits)
 
@@ -173,14 +173,14 @@ def model_fn(features, labels, mode, params):
     # TRAIN #
     #########
 
-    if args.wavegan_loss == 'dcgan':
+    if FLAGS.loss == 'dcgan':
         G_opt = tf.train.AdamOptimizer(
             learning_rate=2e-4,
             beta1=0.5)
         D_opt = tf.train.AdamOptimizer(
             learning_rate=2e-4,
             beta1=0.5)
-    elif args.wavegan_loss == 'wgan-gp':
+    elif FLAGS.loss == 'wgan-gp':
         G_opt = tf.train.AdamOptimizer(
             learning_rate=1e-4,
             beta1=0.5,
