@@ -26,8 +26,8 @@ import absl.logging as _logging  # pylint: disable=unused-import
 import numpy as np
 import tensorflow as tf
 
-import tpu_input_toffy
-import tpu_model_toffy
+import concat_input
+import concat_model
 from tensorflow.contrib import summary
 from tensorflow.python.estimator import estimator
 
@@ -35,7 +35,7 @@ FLAGS = flags.FLAGS
 
 # Cloud TPU Cluster Resolvers
 flags.DEFINE_string(
-    'tpu', default='acheketa1-tpu',
+    'tpu', default='atoffy-tpu2',
     help='The Cloud TPU to use for training. This should be either the name '
          'used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url.')
 flags.DEFINE_string(
