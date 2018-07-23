@@ -94,7 +94,7 @@ def model_fn(features, labels, mode, params):
       List of summary ops to run on the CPU host.
     """
     gs = gs[0]
-    with summary.create_file_writer(FLAGS.model_dir + str(time.time()).zfill(5)).as_default():
+    with summary.create_file_writer(FLAGS.model_dir).as_default():
         with summary.always_record_summaries():
             summary.scalar('g_loss', g_loss, step=gs)
             summary.scalar('d_loss', d_loss, step=gs)
