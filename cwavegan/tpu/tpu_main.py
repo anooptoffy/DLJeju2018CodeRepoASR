@@ -148,7 +148,9 @@ def model_fn(features, labels, mode, params):
 
   if mode != tf.estimator.ModeKeys.PREDICT:
     global_step = tf.reshape(tf.train.get_global_step(), [1])
-    print("here", global_step)
+    print("g_loss", g_loss)
+    print("d_loss",d_loss)
+    print("globa_step",global_step)
     assert False
     g_loss_t = tf.reshape(g_loss, [1])
     d_loss_t = tf.reshape(d_loss, [1])
