@@ -142,10 +142,7 @@ def model_fn(features, labels, mode, params):
     gradient_penalty = tf.reduce_mean((slopes - 1.) ** 2.)
     d_loss += LAMBDA * gradient_penalty
 
-    print(d_loss)
-    print(d_loss)
-    assert False
-
+    
     if mode != tf.estimator.ModeKeys.PREDICT:
         global_step = tf.reshape(tf.train.get_global_step(), [1])
         g_loss_t = g_loss
@@ -156,9 +153,6 @@ def model_fn(features, labels, mode, params):
         #########
         # TRAIN #
         #########
-
-        d_loss = tf.reduce_mean(d_loss)
-        g_loss = tf.reduce_mean(g_loss)
 
         d_optimizer = tf.train.AdamOptimizer(
             learning_rate=FLAGS.learning_rate, beta1=0.5)
