@@ -269,7 +269,7 @@ def main(argv):
       tf.logging.info('Finished evaluating')
       tf.logging.info(metrics)
 
-
+    """
     # Render some generated speech
     generated_iter = cpu_est.predict(input_fn=noise_input_fn)
     audio = [p['generated_audio'][:, :, :] for p in generated_iter]
@@ -289,7 +289,7 @@ def main(argv):
                      'generated_images', 'gen_%s.png' % (step_string)), 'w')
     img.save(file_obj, format='png')
     tf.logging.info('Finished generating images')
-
+    """
 
 if __name__ == '__main__':
   tf.logging.set_verbosity(tf.logging.INFO)
