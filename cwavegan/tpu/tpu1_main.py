@@ -26,8 +26,8 @@ import absl.logging as _logging  # pylint: disable=unused-import
 import numpy as np
 import tensorflow as tf
 
-import tpu_input
-import tpu_model
+import tpu1_input
+import tpu1_model
 from tensorflow.contrib import summary
 from tensorflow.python.estimator import estimator
 
