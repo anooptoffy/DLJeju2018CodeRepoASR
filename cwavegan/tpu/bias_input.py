@@ -26,7 +26,7 @@ import tensorflow as tf
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('data_file', 'gs://wavegan_tfrecords_int/', 'Training .tfrecord data file')
+flags.DEFINE_string('data_file', 'gs://wavegan_tfrecord_int/', 'Training .tfrecord data file')
 
 window_len = 8192
 NUM_TRAIN_AUDIO = 60000
