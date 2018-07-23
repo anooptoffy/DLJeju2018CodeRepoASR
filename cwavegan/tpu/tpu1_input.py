@@ -89,7 +89,7 @@ class InputFunction(object):
 
     random_noise = tf.random_uniform([batch_size, self.noise_dim], -1., 1., dtype=tf.float32)
     print(labels)
-    labels = labels + tf.constant(10, name='fixed', dtype=tf.int32)
+    labels = labels + tf.constant(10, name='fixed', dtype=tf.int64)
     print("here",labels)
     assert False
     features = {
