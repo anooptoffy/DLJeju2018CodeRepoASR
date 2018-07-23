@@ -141,7 +141,8 @@ def model_fn(features, labels, mode, params):
     alpha = tf.random_uniform(shape=[batch_size, 1, 1], minval=0., maxval=1.)
     differences = generated_audio - real_audio
     interpolates = real_audio + (alpha * differences)
-    D_interp = model.discriminator_wavegan(interpolates, labels, reuse=True)
+    interpolates = tf.concat([interpolates, label_fill], 1)
+    D_interp = model.discriminator_wavegan(interpolates, reuse=True)
 
     LAMBDA = 10
     gradients = tf.gradients(D_interp, [interpolates])[0]
@@ -261,8 +262,8 @@ def main(argv):
     # Set module-level global variable so that model_fn and input_fn can be
     # identical for each different kind of dataset and model
     global dataset, model
-    dataset = tpu_input_toffy
-    model = tpu_model_toffy
+    dataset = concat_input
+    model = concat_model
 
     # TPU-based estimator used for TRAIN and EVAL
     est = tf.contrib.tpu.TPUEstimator(
