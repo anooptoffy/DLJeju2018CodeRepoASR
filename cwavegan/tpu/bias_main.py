@@ -173,18 +173,18 @@ def model_fn(features, labels, mode, params):
     #########
 
     if FLAGS.loss == 'dcgan':
-        G_opt = tf.train.AdamOptimizer(
+        g_optimizer = tf.train.AdamOptimizer(
             learning_rate=2e-4,
             beta1=0.5)
-        D_opt = tf.train.AdamOptimizer(
+        d_optimizer = tf.train.AdamOptimizer(
             learning_rate=2e-4,
             beta1=0.5)
     elif FLAGS.loss == 'wgan-gp':
-        G_opt = tf.train.AdamOptimizer(
+        g_optimizer = tf.train.AdamOptimizer(
             learning_rate=1e-4,
             beta1=0.5,
             beta2=0.9)
-        D_opt = tf.train.AdamOptimizer(
+        d_optimizer = tf.train.AdamOptimizer(
             learning_rate=1e-4,
             beta1=0.5,
             beta2=0.9)
