@@ -26,7 +26,7 @@ import tensorflow as tf
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('data_file', 'gs://wavegan_tfrecords/', 'Training .tfrecord data file')
+flags.DEFINE_string('data_file', 'gs://wavegan_tfrecords_int/', 'Training .tfrecord data file')
 
 window_len = 8192
 NUM_TRAIN_AUDIO = 60000
@@ -48,7 +48,6 @@ def parser(serialized_example):
   wav = tf.pad(wav, [[0, window_len - tf.shape(wav)[0]], [0, 0]])
 
   wav.set_shape([window_len, 1])
-  label.set_shape(10)
 
   return wav, label
 
