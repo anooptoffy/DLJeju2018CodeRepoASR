@@ -49,6 +49,7 @@ flags.DEFINE_string(
 
 # Model specific paramenters
 flags.DEFINE_string('model_dir', 'gs://acheketa1-ckpt', 'Output model directory')
+flags.DEFINE_string('loss', 'wgan-gp', 'wgan-gp or dcgan')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
 flags.DEFINE_integer('batch_size', 1024,
@@ -127,19 +128,38 @@ def model_fn(features, labels, mode, params):
   d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, labels, reuse=True))
 
   # Calculate discriminator loss
-  d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
-      labels=tf.ones_like(d_on_data_logits),
-      logits=d_on_data_logits)
-  d_loss_on_gen = tf.nn.sigmoid_cross_entropy_with_logits(
-      labels=tf.zeros_like(d_on_g_logits),
-      logits=d_on_g_logits)
+  if loss == 'dcgan':
+      d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
+          labels=tf.ones_like(d_on_data_logits),
+          logits=d_on_data_logits)
+      d_loss_on_gen = tf.nn.sigmoid_cross_entropy_with_logits(
+          labels=tf.zeros_like(d_on_g_logits),
+          logits=d_on_g_logits)
 
-  d_loss = d_loss_on_data + d_loss_on_gen
+      d_loss = d_loss_on_data + d_loss_on_gen
+      d_loss = d_loss / 2
 
-  # Calculate generator loss
-  g_loss = tf.nn.sigmoid_cross_entropy_with_logits(
-      labels=tf.ones_like(d_on_g_logits),
-      logits=d_on_g_logits)
+      # Calculate generator loss
+      g_loss = tf.nn.sigmoid_cross_entropy_with_logits(
+          labels=tf.ones_like(d_on_g_logits),
+          logits=d_on_g_logits)
+  elif args.wavegan_loss == 'wgan-gp':
+    g_loss = -tf.reduce_mean(d_on_g_logits)
+    d_loss = tf.reduce_mean(d_on_g_logits) - tf.reduce_mean(d_on_data_logits)
+
+    alpha = tf.random_uniform(shape=[batch_size, 1, 1], minval=0., maxval=1.)
+    differences = generated_audio - real_audio
+    interpolates = real_audio + (alpha * differences)
+    with tf.name_scope('D_interp'), tf.variable_scope('D', reuse=True):
+      D_interp = model.discriminator_wavegan(interpolates, labels, reuse=True)
+
+    LAMBDA = 10
+    gradients = tf.gradients(D_interp, [interpolates])[0]
+    slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients), reduction_indices=[1, 2]))
+    gradient_penalty = tf.reduce_mean((slopes - 1.) ** 2.)
+    d_loss += LAMBDA * gradient_penalty
+  else:
+    raise NotImplementedError()
 
   if mode != tf.estimator.ModeKeys.PREDICT:
     global_step = tf.reshape(tf.train.get_global_step(), [1])
@@ -153,13 +173,24 @@ def model_fn(features, labels, mode, params):
     # TRAIN #
     #########
 
-    d_loss = tf.reduce_mean(d_loss)
-    g_loss = tf.reduce_mean(g_loss)
-
-    d_optimizer = tf.train.AdamOptimizer(
-        learning_rate=FLAGS.learning_rate, beta1=0.5)
-    g_optimizer = tf.train.AdamOptimizer(
-        learning_rate=FLAGS.learning_rate, beta1=0.5)
+    if args.wavegan_loss == 'dcgan':
+        G_opt = tf.train.AdamOptimizer(
+            learning_rate=2e-4,
+            beta1=0.5)
+        D_opt = tf.train.AdamOptimizer(
+            learning_rate=2e-4,
+            beta1=0.5)
+    elif args.wavegan_loss == 'wgan-gp':
+        G_opt = tf.train.AdamOptimizer(
+            learning_rate=1e-4,
+            beta1=0.5,
+            beta2=0.9)
+        D_opt = tf.train.AdamOptimizer(
+            learning_rate=1e-4,
+            beta1=0.5,
+            beta2=0.9)
+    else:
+        raise NotImplementedError()
 
     if FLAGS.use_tpu:
       d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
