@@ -159,7 +159,10 @@ def generator_wavegan(
     ):
     with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):
         batch_size = tf.shape(z)[0]
-        batch_size = 1024
+        print("B",batch_size)
+        print("L",labels)
+        print("Z", z)
+        assert False
 
         if use_batchnorm:
             batchnorm = lambda x: tf.layers.batch_normalization(x, training=train)

@@ -73,6 +73,7 @@ class InputFunction(object):
     """Creates a simple Dataset pipeline."""
 
     batch_size = params['batch_size']
+    batch_size = 1024
 
     data_files = []
     for i in range(128):
