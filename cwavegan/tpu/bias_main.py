@@ -35,7 +35,7 @@ FLAGS = flags.FLAGS
 
 # Cloud TPU Cluster Resolvers
 flags.DEFINE_string(
-    'tpu', default='acheketa1-tpu',
+    'tpu', default='acheketa2-tpu',
     help='The Cloud TPU to use for training. This should be either the name '
     'used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url.')
 flags.DEFINE_string(
@@ -48,7 +48,7 @@ flags.DEFINE_string(
     'will attempt to automatically detect the GCE project from metadata.')
 
 # Model specific paramenters
-flags.DEFINE_string('model_dir', 'gs://acheketa1-ckpt', 'Output model directory')
+flags.DEFINE_string('model_dir', 'gs://acheketa2-ckpt', 'Output model directory')
 flags.DEFINE_string('loss', 'dcgan', 'wgan-gp or dcgan')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
