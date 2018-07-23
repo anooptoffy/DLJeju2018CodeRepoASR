@@ -147,8 +147,10 @@ def model_fn(features, labels, mode, params):
       logits=d_on_g_logits)
 
   if mode != tf.estimator.ModeKeys.PREDICT:
-    global_step = tf.train.get_global_step()
-    print(global_step)
+    global_step = tf.reshape(tf.train.get_global_step(), [1])
+    print("global_step", global_step)
+    print("g_loss", g_loss)
+    print("d_loss", d_loss)
     assert False
     host_call = (host_call_fn, [global_step[0], g_loss, d_loss, real_audio, generated_audio])
 
