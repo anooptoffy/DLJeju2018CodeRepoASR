@@ -29,8 +29,11 @@ def tf_repeat(idx, dim1, dim2):
     # tensor equivalent of np.repeat
     # 1d to 3d array tensor
     idx = tf.reshape(idx, [-1,1])
+    print("1", idx)
     idx = tf.tile(idx, [1, dim1 * dim2])
+    print("2", idx)
     idx = tf.reshape(idx, [-1, dim1, dim2])
+    print("3", idx)
     return idx
 
 def conv1d_transpose(
@@ -172,6 +175,7 @@ def generator_wavegan(
         with tf.variable_scope('z_project'):
             output = tf.layers.dense(output, 4 * 4 * dim * 16)
             output = tf.reshape(output, [batch_size, 16, dim * 16])
+            print("labels", labels)
             bias = tf_repeat(labels, 16, dim * 16)
             print("here", bias)
             output = output + bias
