@@ -25,10 +25,10 @@ from __future__ import print_function
 
 import tensorflow as tf
 
-def tf_repeat(idx, dim1, dim2):
+def tf_repeat(idx, dim, dim1, dim2):
     # tensor equivalent of np.repeat
     # 1d to 3d array tensor
-    idx = tf.reshape(idx, [-1,1])
+    idx = tf.reshape(idx, [dim, 1])
     print("1", idx)
     idx = tf.tile(idx, [1, dim1 * dim2])
     print("2", idx)
@@ -176,7 +176,7 @@ def generator_wavegan(
             output = tf.layers.dense(output, 4 * 4 * dim * 16)
             output = tf.reshape(output, [batch_size, 16, dim * 16])
             print("labels", labels)
-            bias = tf_repeat(labels, 16, dim * 16)
+            bias = tf_repeat(labels, batch_size, 16, dim * 16)
             print("here", bias)
             output = output + bias
             output = batchnorm(output)
