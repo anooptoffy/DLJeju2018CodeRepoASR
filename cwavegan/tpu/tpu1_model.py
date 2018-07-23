@@ -28,7 +28,8 @@ import tensorflow as tf
 def tf_repeat(idx, dim, dim1, dim2):
     # tensor equivalent of np.repeat
     # 1d to 3d array tensor
-    idx = tf.reshape(idx, [dim, 1])
+    #idx = tf.reshape(idx, [dim, 1])
+    idx = idx.set_shape([dim, 1])
     print("1", idx)
     idx = tf.tile(idx, [1, dim1 * dim2])
     print("2", idx)
