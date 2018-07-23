@@ -35,7 +35,7 @@ FLAGS = flags.FLAGS
 
 # Cloud TPU Cluster Resolvers
 flags.DEFINE_string(
-    'tpu', default='acheketa2-tpu',
+    'tpu', default='acheketa1-tpu',
     help='The Cloud TPU to use for training. This should be either the name '
          'used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url.')
 flags.DEFINE_string(
@@ -48,7 +48,7 @@ flags.DEFINE_string(
          'will attempt to automatically detect the GCE project from metadata.')
 
 # Model specific paramenters
-flags.DEFINE_string('model_dir', 'gs://acheketa2-ckpt', 'Output model directory')
+flags.DEFINE_string('model_dir', 'gs://acheketa1-ckpt', 'Output model directory')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
 flags.DEFINE_integer('batch_size', 1024,
@@ -60,6 +60,7 @@ flags.DEFINE_integer('train_steps_per_eval', 400,
 flags.DEFINE_integer('iterations_per_loop', 20,
                      'Steps per interior TPU loop. Should be less than'
                      ' --train_steps_per_eval')
+flags.DEFINE_float('learning_rate', 0.0002, 'LR for both D and G')
 flags.DEFINE_boolean('eval_loss', False,
                      'Evaluate discriminator and generator loss during eval')
 flags.DEFINE_boolean('use_tpu', True, 'Use TPU for training')
@@ -123,8 +124,8 @@ def model_fn(features, labels, mode, params):
     generated_audio = model.generator_wavegan(random_noise, labels, train=is_training)
 
     # Get logits from discriminator
-    d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_audio, labels, reuse=False))
-    d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, labels, reuse=True))
+    d_on_data_logits = model.discriminator_wavegan(real_audio, labels, reuse=False)
+    d_on_g_logits = model.discriminator_wavegan(generated_audio, labels, reuse=True)
 
     # Calculate discriminator loss
     g_loss = -tf.reduce_mean(d_on_g_logits)
@@ -152,14 +153,13 @@ def model_fn(features, labels, mode, params):
         # TRAIN #
         #########
 
-        g_optimizer = tf.train.AdamOptimizer(
-            learning_rate=1e-4,
-            beta1=0.5,
-            beta2=0.9)
+        d_loss = tf.reduce_mean(d_loss)
+        g_loss = tf.reduce_mean(g_loss)
+
         d_optimizer = tf.train.AdamOptimizer(
-            learning_rate=1e-4,
-            beta1=0.5,
-            beta2=0.9)
+            learning_rate=FLAGS.learning_rate, beta1=0.5)
+        g_optimizer = tf.train.AdamOptimizer(
+            learning_rate=FLAGS.learning_rate, beta1=0.5)
 
         if FLAGS.use_tpu:
             d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
