@@ -28,6 +28,7 @@ import tensorflow as tf
 
 import tpu_input
 import tpu_model
+from tensorflow.contrib import summary
 from tensorflow.python.estimator import estimator
 
 FLAGS = flags.FLAGS
