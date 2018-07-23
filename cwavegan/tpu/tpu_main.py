@@ -154,10 +154,7 @@ def model_fn(features, labels, mode, params):
     g_loss = tf.reduce_mean(g_loss)
 
     global_step = tf.reshape(tf.train.get_global_step(), [1])
-    print("here", g_loss)
-    g_loss_t = tf.reshape(g_loss, [1])
-    d_loss_t = tf.reshape(d_loss, [1])
-    host_call = (host_call_fn, [global_step[0], g_loss_t[0], d_loss_t[0], real_audio, generated_audio])
+    host_call = (host_call_fn, [global_step[0], g_loss, d_loss, real_audio, generated_audio])
 
     d_optimizer = tf.train.AdamOptimizer(
         learning_rate=FLAGS.learning_rate, beta1=0.5)
@@ -180,8 +177,6 @@ def model_fn(features, labels, mode, params):
 
       increment_step = tf.assign_add(tf.train.get_or_create_global_step(), 1)
       joint_op = tf.group([d_step, g_step, increment_step])
-
-      host_call_fn(tf.train.get_or_create_global_step(), g_loss,)
 
       return tf.contrib.tpu.TPUEstimatorSpec(
           mode=mode,
