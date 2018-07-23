@@ -119,9 +119,6 @@ def model_fn(features, labels, mode, params):
   real_audio = features['real_audio']
   random_noise = features['random_noise']
 
-  print(random_noise)
-  assert False
-
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
   generated_audio = model.generator_wavegan(random_noise, labels, train=is_training)
 
