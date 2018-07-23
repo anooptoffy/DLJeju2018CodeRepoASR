@@ -162,14 +162,15 @@ def generator_wavegan(
         # [100] -> [16, 1024]
         output = z
         with tf.variable_scope('z_project'):
-            print(output)
             output = tf.layers.dense(output, 4 * 4 * dim * 16)
-            print(output)
             output = tf.reshape(output, [batch_size, 16, dim * 16])
+            bias = tf.reshape(labels, [dim * 16])
+            print("here", bias)
+            assert False
+            output = tf.nn.bias_add(output, bias)
             print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
-        print(output)
 
         # Layer 0
         # [16, 1024] -> [64, 512]
@@ -178,7 +179,6 @@ def generator_wavegan(
             print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
-        print(output)
 
         # Layer 1
         # [64, 512] -> [256, 256]
@@ -187,7 +187,6 @@ def generator_wavegan(
             print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
-        print(output)
 
         # Layer 2
         # [256, 256] -> [1024, 128]
@@ -196,7 +195,6 @@ def generator_wavegan(
             print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
-        print(output)
 
         # Layer 3
         # [1024, 128] -> [4096, 64]
@@ -205,7 +203,6 @@ def generator_wavegan(
             print(output)
             output = batchnorm(output)
         output = tf.nn.relu(output)
-        print(output)
 
         # Layer 4
         # [4096, 64] -> [16384, 1]
