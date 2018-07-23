@@ -146,18 +146,19 @@ def model_fn(features, labels, mode, params):
       labels=tf.ones_like(d_on_g_logits),
       logits=d_on_g_logits)
 
-  if mode != tf.estimator.ModeKeys.PREDICT:
-      global_step = tf.reshape(tf.train.get_global_step(), [1])
-      g_loss_t = tf.reshape(g_loss, [1])
-      d_loss_t = tf.reshape(d_loss, [1])
-      host_call = (host_call_fn, [global_step[0], g_loss_t[0], d_loss_t[0], real_audio, generated_audio])
-
   if mode == tf.estimator.ModeKeys.TRAIN:
     #########
     # TRAIN #
     #########
     d_loss = tf.reduce_mean(d_loss)
     g_loss = tf.reduce_mean(g_loss)
+
+    global_step = tf.reshape(tf.train.get_global_step(), [1])
+    print("here", g_loss)
+    g_loss_t = tf.reshape(g_loss, [1])
+    d_loss_t = tf.reshape(d_loss, [1])
+    host_call = (host_call_fn, [global_step[0], g_loss_t[0], d_loss_t[0], real_audio, generated_audio])
+
     d_optimizer = tf.train.AdamOptimizer(
         learning_rate=FLAGS.learning_rate, beta1=0.5)
     g_optimizer = tf.train.AdamOptimizer(
