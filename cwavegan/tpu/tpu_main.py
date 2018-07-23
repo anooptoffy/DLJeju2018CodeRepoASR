@@ -121,12 +121,6 @@ def model_fn(features, labels, mode, params):
       labels=tf.ones_like(d_on_g_logits),
       logits=d_on_g_logits)
 
-
-  tf.summary.scalar("Generator_loss", g_loss)
-  tf.summary.scalar("Real_Discriminator_loss", d_loss_on_data)
-  tf.summary.scalar("Fake_Discriminator_loss", d_loss_on_gen)
-
-
   if mode == tf.estimator.ModeKeys.TRAIN:
     #########
     # TRAIN #
@@ -137,6 +131,10 @@ def model_fn(features, labels, mode, params):
         learning_rate=FLAGS.learning_rate, beta1=0.5)
     g_optimizer = tf.train.AdamOptimizer(
         learning_rate=FLAGS.learning_rate, beta1=0.5)
+
+    tf.summary.scalar("Generator_loss", g_loss)
+    tf.summary.scalar("Real_Discriminator_loss", d_loss_on_data)
+    tf.summary.scalar("Fake_Discriminator_loss", d_loss_on_gen)
 
     if FLAGS.use_tpu:
       d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
