@@ -37,7 +37,7 @@ def parser(serialized_example):
   features = {'samples': tf.FixedLenSequenceFeature([1], tf.float32, allow_missing=True)}
   if True:
     features['label'] = tf.FixedLenSequenceFeature([], tf.int64, allow_missing=True)
-  
+
   example = tf.parse_single_example(serialized_example, features)
   wav = example['samples']
   label = example['label']
