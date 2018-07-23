@@ -100,16 +100,17 @@ def discriminator_wavegan(
             # Layer 0
             # [16384, 1] -> [4096, 64]
             output = x
-            print(output)
             output = tf.layers.conv1d(output, dim, kernel_len, 4, padding='SAME', name='downconv_0')
-            print(output)
-            assert False
+            bias = tf_repeat(labels, batch_size, 4096, dim)
+            output = output + bias
             output = lrelu(output)
             output = phaseshuffle(output)
 
             # Layer 1
             # [4096, 64] -> [1024, 128]
             output = tf.layers.conv1d(output, dim * 2, kernel_len, 4, padding='SAME', name='downconv_1')
+            bias = tf_repeat(labels, batch_size, 1024, dim * 2)
+            output = output + bias
             output = batchnorm(output)
             output = lrelu(output)
             output = phaseshuffle(output)
@@ -117,6 +118,8 @@ def discriminator_wavegan(
             # Layer 2
             # [1024, 128] -> [256, 256]
             output = tf.layers.conv1d(output, dim * 4, kernel_len, 4, padding='SAME', name='downconv_2')
+            bias = tf_repeat(labels, batch_size, 256, dim * 4)
+            output = output + bias
             output = batchnorm(output)
             output = lrelu(output)
             output = phaseshuffle(output)
@@ -124,6 +127,8 @@ def discriminator_wavegan(
             # Layer 3
             # [256, 256] -> [64, 512]
             output = tf.layers.conv1d(output, dim * 8, kernel_len, 4, padding='SAME', name='downconv_3')
+            bias = tf_repeat(labels, batch_size, 64, dim * 8)
+            output = output + bias
             output = batchnorm(output)
             output = lrelu(output)
             output = phaseshuffle(output)
@@ -131,6 +136,8 @@ def discriminator_wavegan(
             # Layer 4
             # [64, 512] -> [16, 1024]
             output = tf.layers.conv1d(output, dim * 16, kernel_len, 4, padding='SAME', name='downconv_4')
+            bias = tf_repeat(labels, batch_size, 16, dim * 16)
+            output = output + bias
             output = batchnorm(output)
             output = lrelu(output)
 
