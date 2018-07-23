@@ -18,7 +18,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os
+import os, time
 
 # Standard Imports
 from absl import flags
@@ -72,6 +72,33 @@ dataset = None
 model = None
 
 def model_fn(features, labels, mode, params):
+  def host_call_fn(gs, g_loss, d_loss, real_audio, generated_audio):
+    """Training host call. Creates scalar summaries for training metrics.
+    This function is executed on the CPU and should not directly reference
+    any Tensors in the rest of the `model_fn`. To pass Tensors from the
+    model to the `metric_fn`, provide as part of the `host_call`. See
+    https://www.tensorflow.org/api_docs/python/tf/contrib/tpu/TPUEstimatorSpec
+    for more information.
+    Arguments should match the list of `Tensor` objects passed as the second
+    element in the tuple passed to `host_call`.
+    Args:
+      gs: `Tensor with shape `[batch]` for the global_step
+      loss: `Tensor` with shape `[batch]` for the training loss.
+      lr: `Tensor` with shape `[batch]` for the learning_rate.
+      input: `Tensor` with shape `[batch, mix_samples, 1]`
+      gt_sources: `Tensor` with shape `[batch, sources_n, output_samples, 1]`
+      est_sources: `Tensor` with shape `[batch, sources_n, output_samples, 1]`
+    Returns:
+      List of summary ops to run on the CPU host.
+    """
+    with summary.create_file_writer(FLAGS.model_dir + str(time.time()).zfill(5)).as_default():
+        with summary.always_record_summaries():
+            summary.scalar('g_loss', g_loss, step=gs)
+            summary.scalar('d_loss', d_loss, step=gs)
+            summary.audio('real_audio', real_audio, 16384)
+            summary.audio('generated_audio', generated_audio, 16374)
+    return summary.all_summary_ops()
+
   """Constructs DCGAN from individual generator and discriminator networks."""
   if mode == tf.estimator.ModeKeys.PREDICT:
     ###########
@@ -85,26 +112,24 @@ def model_fn(features, labels, mode, params):
 
     return tf.contrib.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
 
+
   # Use params['batch_size'] for the batch size inside model_fn
   batch_size = params['batch_size']   # pylint: disable=unused-variable
-  real_images = features['real_audio']
+  real_audio = features['real_audio']
   random_noise = features['random_noise']
 
   # concatenate
   label_fill = tf.expand_dims(labels, axis=2)
   random_noise = tf.concat([random_noise, labels], 1)
-  real_images = tf.concat([real_images, label_fill], 1)
+  real_audio = tf.concat([real_audio, label_fill], 1)
 
   is_training = (mode == tf.estimator.ModeKeys.TRAIN)
-  generated_images = model.generator_wavegan(random_noise,
+  generated_audio = model.generator_wavegan(random_noise,
                                      train=is_training)
 
-  #tf.summary.audio('real_audio', real_images, 16384)
-  #tf.summary.audio('generated_audio', generated_images, 16374)
-
   # Get logits from discriminator
-  d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_images, reuse=False))
-  d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_images, reuse=True))
+  d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_audio, reuse=False))
+  d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, reuse=True))
 
   # Calculate discriminator loss
   d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
@@ -121,6 +146,12 @@ def model_fn(features, labels, mode, params):
       labels=tf.ones_like(d_on_g_logits),
       logits=d_on_g_logits)
 
+  if mode != tf.estimator.ModeKeys.PREDICT:
+      global_step = tf.reshape(tf.train.get_global_step(), [1])
+      g_loss_t = tf.reshape(g_loss, [1])
+      d_loss_t = tf.reshape(d_loss, [1])
+      host_call = (host_call_fn, [global_step[0], g_loss_t[0], d_loss_t[0], real_audio, generated_audio])
+
   if mode == tf.estimator.ModeKeys.TRAIN:
     #########
     # TRAIN #
@@ -131,10 +162,6 @@ def model_fn(features, labels, mode, params):
         learning_rate=FLAGS.learning_rate, beta1=0.5)
     g_optimizer = tf.train.AdamOptimizer(
         learning_rate=FLAGS.learning_rate, beta1=0.5)
-
-    tf.summary.scalar("Generator_loss", g_loss)
-    tf.summary.scalar("Real_Discriminator_loss", d_loss_on_data)
-    tf.summary.scalar("Fake_Discriminator_loss", d_loss_on_gen)
 
     if FLAGS.use_tpu:
       d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
@@ -153,10 +180,13 @@ def model_fn(features, labels, mode, params):
       increment_step = tf.assign_add(tf.train.get_or_create_global_step(), 1)
       joint_op = tf.group([d_step, g_step, increment_step])
 
+      host_call_fn(tf.train.get_or_create_global_step(), g_loss,)
+
       return tf.contrib.tpu.TPUEstimatorSpec(
           mode=mode,
           loss=g_loss,
-          train_op=joint_op)
+          train_op=joint_op,
+          host_call = host_call)
 
   elif mode == tf.estimator.ModeKeys.EVAL:
     ########
@@ -237,7 +267,8 @@ def main(argv):
       use_tpu=FLAGS.use_tpu,
       config=config,
       train_batch_size=FLAGS.batch_size,
-      eval_batch_size=FLAGS.batch_size)
+      eval_batch_size=FLAGS.batch_size,
+      host_call = host_call_fn)
 
   # CPU-based estimator used for PREDICT (generating images)
   cpu_est = tf.contrib.tpu.TPUEstimator(
