@@ -151,8 +151,8 @@ def model_fn(features, labels, mode, params):
     #########
     # TRAIN #
     #########
-    d_loss = tf.reduce_mean(d_loss)
-    g_loss = tf.reduce_mean(g_loss)
+    #d_loss = tf.reduce_mean(d_loss)
+    #g_loss = tf.reduce_mean(g_loss)
 
     global_step = tf.reshape(tf.train.get_global_step(), [1])
     host_call = (host_call_fn, [global_step, g_loss, d_loss, real_audio, generated_audio])
