@@ -48,7 +48,7 @@ def parser(serialized_example):
   wav = tf.pad(wav, [[0, window_len - tf.shape(wav)[0]], [0, 0]])
 
   wav.set_shape([window_len, 1])
-  label.set_shape(10)
+  label.set_shape(1)
 
   return wav, label
 
