@@ -207,7 +207,7 @@ def generator_wavegan(
             output = conv1d_transpose(output, 1, kernel_len, 4, upsample=upsample)
             output = tf.nn.bias_add(output, labels)
         output = tf.nn.tanh(output)
-        
+
         # Automatically update batchnorm moving averages every time G is used during training
         if train and use_batchnorm:
             update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
