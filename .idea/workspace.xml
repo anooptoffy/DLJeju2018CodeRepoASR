@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2e8c2ea-b77e-44d0-ad89-638cf45efd29" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/cwavegan/tpu/bias_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/cwavegan/tpu/bias_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cwavegan/tpu/bias_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/cwavegan/tpu/bias_input.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cwavegan/tpu/bias_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/cwavegan/tpu/bias_model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,20 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="bias_main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bias_main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3407">
-              <caret line="62" column="38" lean-forward="true" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="concat_main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cwavegan/tpu/concat_main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="474">
-              <caret line="62" column="66" lean-forward="true" selection-start-line="62" selection-end-line="62" selection-end-column="66" />
+            <state relative-caret-position="467">
+              <caret line="154" selection-start-line="154" selection-end-line="154" />
             </state>
           </provider>
         </entry>
@@ -45,6 +37,18 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="535">
               <caret line="86" selection-start-line="86" selection-end-line="86" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bias_model.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="423">
+              <caret line="32" column="34" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
+              <folding>
+                <element signature="e#927#965#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -65,6 +69,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/cwavegan/tpu/bias_main.py" />
+        <option value="$PROJECT_DIR$/cwavegan/tpu/bias_input.py" />
+        <option value="$PROJECT_DIR$/cwavegan/tpu/bias_model.py" />
       </list>
     </option>
   </component>
@@ -352,16 +358,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="93" column="32" lean-forward="true" selection-start-line="93" selection-start-column="32" selection-end-line="93" selection-end-column="32" />
-          <folding>
-            <element signature="e#927#965#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_main1.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="346">
@@ -372,6 +368,10 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/wavegan/wavegan.py" />
+    <entry file="file://$PROJECT_DIR$/wavegan/backup.py" />
+    <entry file="file://$PROJECT_DIR$/wavegan/wavegan.py" />
+    <entry file="file://$PROJECT_DIR$/wavegan/backup.py" />
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_input.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="535">
@@ -379,21 +379,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wavegan/wavegan.py" />
-    <entry file="file://$PROJECT_DIR$/wavegan/backup.py" />
-    <entry file="file://$PROJECT_DIR$/wavegan/wavegan.py" />
-    <entry file="file://$PROJECT_DIR$/wavegan/backup.py" />
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/concat_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="474">
-          <caret line="62" column="66" lean-forward="true" selection-start-line="62" selection-end-line="62" selection-end-column="66" />
+        <state relative-caret-position="531">
+          <caret line="164" column="35" lean-forward="true" selection-start-line="163" selection-start-column="4" selection-end-line="164" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3407">
-          <caret line="62" column="38" lean-forward="true" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
+        <state relative-caret-position="467">
+          <caret line="154" selection-start-line="154" selection-end-line="154" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="423">
+          <caret line="32" column="34" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
+          <folding>
+            <element signature="e#927#965#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
