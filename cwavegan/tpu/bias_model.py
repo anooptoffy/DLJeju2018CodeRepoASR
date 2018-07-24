@@ -238,6 +238,6 @@ def generator_wavegan(
                 raise Exception('Other update ops found in graph')
             with tf.control_dependencies(update_ops):
                 output = tf.identity(output)
-
+        print("hi")
         return output
 
