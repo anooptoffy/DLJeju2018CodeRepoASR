@@ -26,8 +26,8 @@ import absl.logging as _logging  # pylint: disable=unused-import
 import numpy as np
 import tensorflow as tf
 
-import bias_input
-import bias_model
+import bias_input1 as bias_input
+import bias_model1 as bias_model
 from tensorflow.contrib import summary
 from tensorflow.python.estimator import estimator
 
@@ -48,19 +48,19 @@ flags.DEFINE_string(
     'will attempt to automatically detect the GCE project from metadata.')
 
 # Model specific paramenters
-flags.DEFINE_string('model_dir', 'gs://acheketa4-ckpt', 'Output model directory')
+flags.DEFINE_string('model_dir', 'gs://acheketa5-ckpt', 'Output model directory')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
-flags.DEFINE_integer('batch_size', 512,
+flags.DEFINE_integer('batch_size', 1024,
                      'Batch size for both generator and discriminator')
 flags.DEFINE_integer('num_shards', None, 'Number of TPU chips')
 flags.DEFINE_integer('train_steps', 200000, 'Number of training steps')
 flags.DEFINE_integer('train_steps_per_eval', 400,
                      'Steps per eval and image generation')
-flags.DEFINE_integer('iterations_per_loop', 40,
+flags.DEFINE_integer('iterations_per_loop', 20,
                      'Steps per interior TPU loop. Should be less than'
                      ' --train_steps_per_eval')
-flags.DEFINE_float('learning_rate', 0.02, 'LR for both D and G')
+flags.DEFINE_float('learning_rate', 0.0002, 'LR for both D and G')
 flags.DEFINE_boolean('eval_loss', False,
                      'Evaluate discriminator and generator loss during eval')
 flags.DEFINE_boolean('use_tpu', True, 'Use TPU for training')
@@ -153,12 +153,13 @@ def model_fn(features, labels, mode, params):
     # TRAIN #
     #########
 
-    g_optimizer = tf.train.AdamOptimizer(
-        learning_rate=FLAGS.learning_rate,
-        beta1=0.5)
+    d_loss = tf.reduce_mean(d_loss)
+    g_loss = tf.reduce_mean(g_loss)
+
     d_optimizer = tf.train.AdamOptimizer(
-        learning_rate=2e-4,
-        beta1=0.5)
+        learning_rate=FLAGS.learning_rate, beta1=0.5)
+    g_optimizer = tf.train.AdamOptimizer(
+        learning_rate=FLAGS.learning_rate, beta1=0.5)
 
     if FLAGS.use_tpu:
       d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
