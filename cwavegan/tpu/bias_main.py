@@ -35,7 +35,7 @@ FLAGS = flags.FLAGS
 
 # Cloud TPU Cluster Resolvers
 flags.DEFINE_string(
-    'tpu', default='acheketa2-tpu',
+    'tpu', default='acheketa3-tpu',
     help='The Cloud TPU to use for training. This should be either the name '
     'used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url.')
 flags.DEFINE_string(
@@ -48,19 +48,19 @@ flags.DEFINE_string(
     'will attempt to automatically detect the GCE project from metadata.')
 
 # Model specific paramenters
-flags.DEFINE_string('model_dir', 'gs://acheketa2-ckpt', 'Output model directory')
-flags.DEFINE_string('loss', 'dcgan', 'wgan-gp or dcgan')
+flags.DEFINE_string('model_dir', 'gs://acheketa4-ckpt', 'Output model directory')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
-flags.DEFINE_integer('batch_size', 1024,
+flags.DEFINE_integer('batch_size', 512,
                      'Batch size for both generator and discriminator')
 flags.DEFINE_integer('num_shards', None, 'Number of TPU chips')
 flags.DEFINE_integer('train_steps', 200000, 'Number of training steps')
 flags.DEFINE_integer('train_steps_per_eval', 400,
                      'Steps per eval and image generation')
-flags.DEFINE_integer('iterations_per_loop', 20,
+flags.DEFINE_integer('iterations_per_loop', 40,
                      'Steps per interior TPU loop. Should be less than'
                      ' --train_steps_per_eval')
+flags.DEFINE_float('learning_rate', 0.02, 'LR for both D and G')
 flags.DEFINE_boolean('eval_loss', False,
                      'Evaluate discriminator and generator loss during eval')
 flags.DEFINE_boolean('use_tpu', True, 'Use TPU for training')
@@ -127,37 +127,19 @@ def model_fn(features, labels, mode, params):
   d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, labels, reuse=True))
 
   # Calculate discriminator loss
-  if FLAGS.loss == 'dcgan':
-      d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
-          labels=tf.ones_like(d_on_data_logits),
-          logits=d_on_data_logits)
-      d_loss_on_gen = tf.nn.sigmoid_cross_entropy_with_logits(
-          labels=tf.zeros_like(d_on_g_logits),
-          logits=d_on_g_logits)
+  d_loss_on_data = tf.nn.sigmoid_cross_entropy_with_logits(
+      labels=tf.ones_like(d_on_data_logits),
+      logits=d_on_data_logits)
+  d_loss_on_gen = tf.nn.sigmoid_cross_entropy_with_logits(
+      labels=tf.zeros_like(d_on_g_logits),
+      logits=d_on_g_logits)
 
-      d_loss = d_loss_on_data + d_loss_on_gen
-      #d_loss = d_loss / 2
+  d_loss = d_loss_on_data + d_loss_on_gen
 
-      # Calculate generator loss
-      g_loss = tf.nn.sigmoid_cross_entropy_with_logits(
-          labels=tf.ones_like(d_on_g_logits),
-          logits=d_on_g_logits)
-  elif FLAGS.loss == 'wgan-gp':
-    g_loss = -tf.reduce_mean(d_on_g_logits)
-    d_loss = tf.reduce_mean(d_on_g_logits) - tf.reduce_mean(d_on_data_logits)
-
-    alpha = tf.random_uniform(shape=[batch_size, 1, 1], minval=0., maxval=1.)
-    differences = generated_audio - real_audio
-    interpolates = real_audio + (alpha * differences)
-    D_interp = model.discriminator_wavegan(interpolates, labels, reuse=True)
-
-    LAMBDA = 10
-    gradients = tf.gradients(D_interp, [interpolates])[0]
-    slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients), reduction_indices=[1, 2]))
-    gradient_penalty = tf.reduce_mean((slopes - 1.) ** 2.)
-    d_loss += LAMBDA * gradient_penalty
-  else:
-    raise NotImplementedError()
+  # Calculate generator loss
+  g_loss = tf.nn.sigmoid_cross_entropy_with_logits(
+      labels=tf.ones_like(d_on_g_logits),
+      logits=d_on_g_logits)
 
   if mode != tf.estimator.ModeKeys.PREDICT:
     global_step = tf.reshape(tf.train.get_global_step(), [1])
@@ -171,24 +153,12 @@ def model_fn(features, labels, mode, params):
     # TRAIN #
     #########
 
-    if FLAGS.loss == 'dcgan':
-        g_optimizer = tf.train.AdamOptimizer(
-            learning_rate=2e-4,
-            beta1=0.5)
-        d_optimizer = tf.train.AdamOptimizer(
-            learning_rate=2e-4,
-            beta1=0.5)
-    elif FLAGS.loss == 'wgan-gp':
-        g_optimizer = tf.train.AdamOptimizer(
-            learning_rate=1e-4,
-            beta1=0.5,
-            beta2=0.9)
-        d_optimizer = tf.train.AdamOptimizer(
-            learning_rate=1e-4,
-            beta1=0.5,
-            beta2=0.9)
-    else:
-        raise NotImplementedError()
+    g_optimizer = tf.train.AdamOptimizer(
+        learning_rate=FLAGS.learning_rate,
+        beta1=0.5)
+    d_optimizer = tf.train.AdamOptimizer(
+        learning_rate=2e-4,
+        beta1=0.5)
 
     if FLAGS.use_tpu:
       d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
