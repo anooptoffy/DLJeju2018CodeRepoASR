@@ -228,12 +228,8 @@ def generator_wavegan(
             # output = conv1d_transpose(output, 1, kernel_len, 4, upsample=upsample)
             output = conv1d_transpose(output, 1, kernel_len, 2, upsample=upsample)
             bias = tf_repeat(labels, batch_size, 8192, 1)
-            print("hi",bias)
             output = output * bias
-            print("hi1",output)
         output = tf.nn.tanh(output)
-        print("hi2",output)
-        assert False
 
         # Automatically update batchnorm moving averages every time G is used during training
         if train and use_batchnorm:
