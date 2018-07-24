@@ -35,7 +35,7 @@ FLAGS = flags.FLAGS
 
 # Cloud TPU Cluster Resolvers
 flags.DEFINE_string(
-    'tpu', default='acheketa3-tpu',
+    'tpu', default='acheketa2-tpu',
     help='The Cloud TPU to use for training. This should be either the name '
          'used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url.')
 flags.DEFINE_string(
@@ -48,7 +48,7 @@ flags.DEFINE_string(
          'will attempt to automatically detect the GCE project from metadata.')
 
 # Model specific paramenters
-flags.DEFINE_string('model_dir', 'gs://acheketa3-ckpt', 'Output model directory')
+flags.DEFINE_string('model_dir', 'gs://acheketa4-ckpt', 'Output model directory')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
 flags.DEFINE_integer('batch_size', 1024,
@@ -60,7 +60,7 @@ flags.DEFINE_integer('train_steps_per_eval', 400,
 flags.DEFINE_integer('iterations_per_loop', 20,
                      'Steps per interior TPU loop. Should be less than'
                      ' --train_steps_per_eval')
-flags.DEFINE_float('learning_rate', 0.0002, 'LR for both D and G')
+flags.DEFINE_float('learning_rate', 0.02, 'LR for both D and G')
 flags.DEFINE_boolean('eval_loss', False,
                      'Evaluate discriminator and generator loss during eval')
 flags.DEFINE_boolean('use_tpu', True, 'Use TPU for training')
@@ -110,7 +110,7 @@ def model_fn(features, labels, mode, params):
         # Pass only noise to PREDICT mode
         random_noise = features['random_noise']
         predictions = {
-            'generated_audio': model.generator_wavegan(random_noise, labels, train=False)
+            'generated_audio': model.generator_wavegan(random_noise, labels, train=False, use_batchnorm=False)
         }
 
         return tf.contrib.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
@@ -121,11 +121,11 @@ def model_fn(features, labels, mode, params):
     random_noise = features['random_noise']
 
     is_training = (mode == tf.estimator.ModeKeys.TRAIN)
-    generated_audio = model.generator_wavegan(random_noise, labels, train=is_training)
+    generated_audio = model.generator_wavegan(random_noise, labels, train=is_training, use_batchnorm=False)
 
     # Get logits from discriminator
-    d_on_data_logits = model.discriminator_wavegan(real_audio, labels, reuse=False)
-    d_on_g_logits = model.discriminator_wavegan(generated_audio, labels, reuse=True)
+    d_on_data_logits = model.discriminator_wavegan(real_audio, labels, reuse=False, use_batchnorm=False)
+    d_on_g_logits = model.discriminator_wavegan(generated_audio, labels, reuse=True, use_batchnorm=False)
 
     # Calculate discriminator loss
     g_loss = -tf.reduce_mean(d_on_g_logits)
@@ -134,7 +134,7 @@ def model_fn(features, labels, mode, params):
     alpha = tf.random_uniform(shape=[batch_size, 1, 1], minval=0., maxval=1.)
     differences = generated_audio - real_audio
     interpolates = real_audio + (alpha * differences)
-    D_interp = model.discriminator_wavegan(interpolates, labels, reuse=True)
+    D_interp = model.discriminator_wavegan(interpolates, labels, reuse=True, use_batchnorm=False)
 
     LAMBDA = 10
     gradients = tf.gradients(D_interp, [interpolates])[0]
