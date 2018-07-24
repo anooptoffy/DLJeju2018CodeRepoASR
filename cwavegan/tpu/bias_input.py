@@ -84,9 +84,11 @@ class InputFunction(object):
     labels = labels + tf.constant(10, name='fixed', dtype=tf.int64)
     labels = tf.cast(labels, dtype=tf.float32)
     labels = tf.reshape(labels, [batch_size, 1])
-    tf.enable_eager_execution()
-    print(labels)
+
+    with tf.Session() as sess:
+      print(sess.run(labels))
     assert False
+
     features = {
         'real_audio': wav,
         'random_noise': random_noise}
