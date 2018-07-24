@@ -48,7 +48,7 @@ flags.DEFINE_string(
     'will attempt to automatically detect the GCE project from metadata.')
 
 # Model specific paramenters
-flags.DEFINE_string('model_dir', 'gs://acheketa5-ckpt', 'Output model directory')
+flags.DEFINE_string('model_dir', 'gs://acheketa4-ckpt', 'Output model directory')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
 flags.DEFINE_integer('batch_size', 512,
@@ -152,11 +152,10 @@ def model_fn(features, labels, mode, params):
     #########
     # TRAIN #
     #########
-
     d_optimizer = tf.train.AdamOptimizer(
         learning_rate=FLAGS.learning_rate, beta1=0.5)
     g_optimizer = tf.train.AdamOptimizer(
-        learning_rate=FLAGS.learning_rate, beta1=0.5)
+        learning_rate=0.0002, beta1=0.5)
 
     if FLAGS.use_tpu:
       d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
