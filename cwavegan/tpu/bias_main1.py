@@ -48,19 +48,19 @@ flags.DEFINE_string(
     'will attempt to automatically detect the GCE project from metadata.')
 
 # Model specific paramenters
-flags.DEFINE_string('model_dir', 'gs://acheketa5-ckpt', 'Output model directory')
+flags.DEFINE_string('model_dir', 'gs://acheketa4-ckpt', 'Output model directory')
 flags.DEFINE_integer('noise_dim', 100,
                      'Number of dimensions for the noise vector')
-flags.DEFINE_integer('batch_size', 1024,
+flags.DEFINE_integer('batch_size', 512,
                      'Batch size for both generator and discriminator')
 flags.DEFINE_integer('num_shards', None, 'Number of TPU chips')
 flags.DEFINE_integer('train_steps', 200000, 'Number of training steps')
 flags.DEFINE_integer('train_steps_per_eval', 400,
                      'Steps per eval and image generation')
-flags.DEFINE_integer('iterations_per_loop', 20,
+flags.DEFINE_integer('iterations_per_loop', 40,
                      'Steps per interior TPU loop. Should be less than'
                      ' --train_steps_per_eval')
-flags.DEFINE_float('learning_rate', 0.0002, 'LR for both D and G')
+flags.DEFINE_float('learning_rate', 0.02, 'LR for both D and G')
 flags.DEFINE_boolean('eval_loss', False,
                      'Evaluate discriminator and generator loss during eval')
 flags.DEFINE_boolean('use_tpu', True, 'Use TPU for training')
