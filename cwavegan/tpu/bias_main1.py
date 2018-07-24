@@ -159,7 +159,7 @@ def model_fn(features, labels, mode, params):
     d_optimizer = tf.train.AdamOptimizer(
         learning_rate=FLAGS.learning_rate, beta1=0.5)
     g_optimizer = tf.train.AdamOptimizer(
-        learning_rate=FLAGS.learning_rate, beta1=0.5)
+        learning_rate=0.0002, beta1=0.5)
 
     if FLAGS.use_tpu:
       d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)
