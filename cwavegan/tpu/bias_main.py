@@ -141,6 +141,9 @@ def model_fn(features, labels, mode, params):
       labels=tf.ones_like(d_on_g_logits),
       logits=d_on_g_logits)
 
+  print("here",g_loss)
+  print("here", d_loss)
+  assert False
   if mode != tf.estimator.ModeKeys.PREDICT:
     global_step = tf.reshape(tf.train.get_global_step(), [1])
     g_loss_t = g_loss
