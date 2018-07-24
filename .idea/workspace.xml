@@ -19,32 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="concat_input.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cwavegan/tpu/concat_input.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1314">
-              <caret line="81" column="21" selection-start-line="81" selection-start-column="21" selection-end-line="81" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wgan_concat_main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_concat_main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="132" column="17" selection-start-line="132" selection-start-column="17" selection-end-line="132" selection-end-column="17" />
-              <folding>
-                <element signature="e#733#771#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="wgan_main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="610">
-              <caret line="62" column="38" lean-forward="true" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
+            <state relative-caret-position="133">
+              <caret line="112" column="89" selection-start-line="112" selection-start-column="89" selection-end-line="112" selection-end-column="89" />
               <folding>
                 <element signature="e#733#771#0" expanded="true" />
               </folding>
@@ -55,26 +34,8 @@
       <file leaf-file-name="bias_model.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="738">
-              <caret line="81" column="22" lean-forward="true" selection-start-line="81" selection-start-column="22" selection-end-line="81" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="train_wavegan.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cwavegan/train_wavegan.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="68" column="42" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="concat_model.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cwavegan/tpu/concat_model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2196">
-              <caret line="126" column="65" selection-start-line="126" selection-start-column="49" selection-end-line="126" selection-end-column="65" />
+            <state relative-caret-position="-1314">
+              <caret line="76" column="26" lean-forward="true" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -100,7 +61,6 @@
       <find>summary.audio</find>
       <find>0.0002</find>
       <find>NUM_EVAL_IMAGES</find>
-      <find>wavegan</find>
       <find>labels</find>
       <find>128</find>
       <find>tf_repeat</find>
@@ -120,6 +80,7 @@
       <find>interpolate</find>
       <find>interpolates</find>
       <find>cross</find>
+      <find>wavegan</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -493,9 +454,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1314">
+          <caret line="76" column="26" lean-forward="true" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_concat_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
+        <state relative-caret-position="1812">
           <caret line="132" column="17" selection-start-line="132" selection-start-column="17" selection-end-line="132" selection-end-column="17" />
           <folding>
             <element signature="e#733#771#0" expanded="true" />
@@ -503,17 +471,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="81" column="22" lean-forward="true" selection-start-line="81" selection-start-column="22" selection-end-line="81" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="610">
-          <caret line="62" column="38" lean-forward="true" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
+        <state relative-caret-position="133">
+          <caret line="112" column="89" selection-start-line="112" selection-start-column="89" selection-end-line="112" selection-end-column="89" />
           <folding>
             <element signature="e#733#771#0" expanded="true" />
           </folding>

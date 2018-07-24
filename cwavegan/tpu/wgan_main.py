@@ -110,7 +110,7 @@ def model_fn(features, labels, mode, params):
         # Pass only noise to PREDICT mode
         random_noise = features['random_noise']
         predictions = {
-            'generated_audio': model.generator_wavegan(random_noise, labels, train=False, use_batchnorm=False)
+            'generated_audio': model.generator_wavegan(random_noise, labels, train=False )
         }
 
         return tf.contrib.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
@@ -121,11 +121,11 @@ def model_fn(features, labels, mode, params):
     random_noise = features['random_noise']
 
     is_training = (mode == tf.estimator.ModeKeys.TRAIN)
-    generated_audio = model.generator_wavegan(random_noise, labels, train=is_training, use_batchnorm=False)
+    generated_audio = model.generator_wavegan(random_noise, labels, train=is_training)
 
     # Get logits from discriminator
-    d_on_data_logits = model.discriminator_wavegan(real_audio, labels, reuse=False, use_batchnorm=False)
-    d_on_g_logits = model.discriminator_wavegan(generated_audio, labels, reuse=True, use_batchnorm=False)
+    d_on_data_logits = model.discriminator_wavegan(real_audio, labels, reuse=False)
+    d_on_g_logits = model.discriminator_wavegan(generated_audio, labels, reuse=True)
 
     # Calculate discriminator loss
     g_loss = -tf.reduce_mean(d_on_g_logits)
@@ -134,7 +134,7 @@ def model_fn(features, labels, mode, params):
     alpha = tf.random_uniform(shape=[batch_size, 1, 1], minval=0., maxval=1.)
     differences = generated_audio - real_audio
     interpolates = real_audio + (alpha * differences)
-    D_interp = model.discriminator_wavegan(interpolates, labels, reuse=True, use_batchnorm=False)
+    D_interp = model.discriminator_wavegan(interpolates, labels, reuse=True)
 
     LAMBDA = 10
     gradients = tf.gradients(D_interp, [interpolates])[0]
