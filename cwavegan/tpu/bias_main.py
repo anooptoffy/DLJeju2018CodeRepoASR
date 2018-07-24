@@ -153,9 +153,6 @@ def model_fn(features, labels, mode, params):
     # TRAIN #
     #########
 
-    d_loss = tf.reduce_mean(d_loss)
-    g_loss = tf.reduce_mean(g_loss)
-
     g_optimizer = tf.train.AdamOptimizer(
         learning_rate=FLAGS.learning_rate,
         beta1=0.5)
