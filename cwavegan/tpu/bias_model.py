@@ -227,11 +227,10 @@ def generator_wavegan(
         with tf.variable_scope('upconv_4'):
             # output = conv1d_transpose(output, 1, kernel_len, 4, upsample=upsample)
             output = conv1d_transpose(output, 1, kernel_len, 2, upsample=upsample)
-            bias = tf_repeat(labels, batch_size, 8192, 1)
-            output = output * bias
+            #bias = tf_repeat(labels, batch_size, 8192, 1)
+            #output = output * bias
         output = tf.nn.tanh(output)
-        print("hereme",output)
-        """
+
         # Automatically update batchnorm moving averages every time G is used during training
         if train and use_batchnorm:
             update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
@@ -239,6 +238,6 @@ def generator_wavegan(
                 raise Exception('Other update ops found in graph')
             with tf.control_dependencies(update_ops):
                 output = tf.identity(output)
-        """
+
         return output
 
