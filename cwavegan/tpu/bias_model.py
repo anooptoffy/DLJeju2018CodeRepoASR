@@ -230,7 +230,7 @@ def generator_wavegan(
             bias = tf_repeat(labels, batch_size, 8192, 1)
             output = output * bias
         output = tf.nn.tanh(output)
-
+        print("hereme",output)
         """
         # Automatically update batchnorm moving averages every time G is used during training
         if train and use_batchnorm:
