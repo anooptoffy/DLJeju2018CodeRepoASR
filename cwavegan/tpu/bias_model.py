@@ -231,6 +231,7 @@ def generator_wavegan(
             output = output * bias
         output = tf.nn.tanh(output)
 
+        """
         # Automatically update batchnorm moving averages every time G is used during training
         if train and use_batchnorm:
             update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
@@ -238,6 +239,6 @@ def generator_wavegan(
                 raise Exception('Other update ops found in graph')
             with tf.control_dependencies(update_ops):
                 output = tf.identity(output)
-        print("hi")
+        """
         return output
 
