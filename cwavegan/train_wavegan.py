@@ -319,14 +319,8 @@ def preview(args):
     with open(z_fp, 'wb') as f:
       pickle.dump(_zs, f)
 
-  # label to one hot vector
-  sample_n = 20
-  one_hot = np.zeros([sample_n, _D_Y])
-  _zs = _zs[:sample_n]
-  for i in range(10):
-    one_hot[2 * i + 1][i] = 1
-    one_hot[2 * i][i] = 1
-  _zs = np.concatenate([_zs, one_hot], 1)
+
+
 
   # Set up graph for generating preview images
   feeds = {}

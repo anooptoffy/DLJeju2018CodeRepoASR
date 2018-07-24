@@ -124,8 +124,8 @@ def model_fn(features, labels, mode, params):
     generated_audio = model.generator_wavegan(random_noise, labels, train=is_training)
 
     # Get logits from discriminator
-    d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_audio, labels, reuse=False))
-    d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, labels, reuse=True))
+    d_on_data_logits = model.discriminator_wavegan(real_audio, labels, reuse=False)
+    d_on_g_logits = model.discriminator_wavegan(generated_audio, labels, reuse=True)
 
     # Calculate discriminator loss
     g_loss = -tf.reduce_mean(d_on_g_logits)

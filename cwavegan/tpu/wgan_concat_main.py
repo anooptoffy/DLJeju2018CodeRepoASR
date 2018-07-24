@@ -141,7 +141,6 @@ def model_fn(features, labels, mode, params):
     alpha = tf.random_uniform(shape=[batch_size, 1, 1], minval=0., maxval=1.)
     differences = generated_audio - real_audio
     interpolates = real_audio + (alpha * differences)
-    interpolates = tf.concat([interpolates, label_fill], 1)
     D_interp = model.discriminator_wavegan(interpolates, reuse=True)
 
     LAMBDA = 10
