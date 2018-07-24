@@ -43,8 +43,8 @@
       <file leaf-file-name="bias_model.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="230" column="47" selection-start-line="230" selection-start-column="37" selection-end-line="230" selection-end-column="47" />
+            <state relative-caret-position="279">
+              <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
               <folding>
                 <element signature="e#927#965#0" expanded="true" />
               </folding>
@@ -494,8 +494,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="230" column="47" selection-start-line="230" selection-start-column="37" selection-end-line="230" selection-end-column="47" />
+        <state relative-caret-position="279">
+          <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
           <folding>
             <element signature="e#927#965#0" expanded="true" />
           </folding>

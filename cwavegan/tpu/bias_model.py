@@ -30,7 +30,7 @@ def tf_repeat(idx, dim, dim1, dim2):
     # 1d to 3d array tensor
     idx = tf.tile(idx, [1, dim1 * dim2])
     idx = tf.reshape(idx, [-1, dim1, dim2])
-    idx = tf.ones([dim, dim1, dim2])
+    print(idx)
     return idx
 
 def conv1d_transpose(
