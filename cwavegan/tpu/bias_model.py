@@ -30,6 +30,7 @@ def tf_repeat(idx, dim, dim1, dim2):
     # 1d to 3d array tensor
     idx = tf.tile(idx, [1, dim1 * dim2])
     idx = tf.reshape(idx, [-1, dim1, dim2])
+    idx = tf.ones([dim, dim1, dim2])
     return idx
 
 def conv1d_transpose(
@@ -227,8 +228,8 @@ def generator_wavegan(
         with tf.variable_scope('upconv_4'):
             # output = conv1d_transpose(output, 1, kernel_len, 4, upsample=upsample)
             output = conv1d_transpose(output, 1, kernel_len, 2, upsample=upsample)
-            #bias = tf_repeat(labels, batch_size, 8192, 1)
-            #output = output * bias
+            bias = tf_repeat(labels, batch_size, 8192, 1)
+            output = output * bias
         output = tf.nn.tanh(output)
 
         # Automatically update batchnorm moving averages every time G is used during training

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b2e8c2ea-b77e-44d0-ad89-638cf45efd29" name="Default" comment="" />
+    <list default="true" id="b2e8c2ea-b77e-44d0-ad89-638cf45efd29" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/cwavegan/tpu/bias_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/cwavegan/tpu/bias_model.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,11 +25,8 @@
       <file leaf-file-name="wgan_main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
-              <folding>
-                <element signature="e#733#771#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="241">
+              <caret line="28" column="17" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -35,8 +34,8 @@
       <file leaf-file-name="bias_input.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_input.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="74" column="27" lean-forward="true" selection-start-line="74" selection-start-column="27" selection-end-line="74" selection-end-column="27" />
+            <state relative-caret-position="517">
+              <caret line="85" column="46" selection-start-line="85" selection-start-column="45" selection-end-line="85" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -44,8 +43,11 @@
       <file leaf-file-name="bias_model.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="634">
-              <caret line="241" column="11" selection-start-line="241" selection-start-column="11" selection-end-line="241" selection-end-column="11" />
+            <state relative-caret-position="392">
+              <caret line="230" column="47" selection-start-line="230" selection-start-column="37" selection-end-line="230" selection-end-column="47" />
+              <folding>
+                <element signature="e#927#965#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -70,9 +72,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>tf.summary</find>
-      <find>create_file</find>
-      <find>estimator</find>
       <find>global_step</find>
       <find>file_writer</find>
       <find>summary</find>
@@ -99,7 +98,10 @@
       <find>interpolates</find>
       <find>cross</find>
       <find>wavegan</find>
+      <find>bias_input</find>
       <find>discrimi</find>
+      <find>batchnorm</find>
+      <find>batchnorm(</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -471,18 +473,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
-          <folding>
-            <element signature="e#733#771#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="241">
+          <caret line="28" column="17" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_input.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="74" column="27" lean-forward="true" selection-start-line="74" selection-start-column="27" selection-end-line="74" selection-end-column="27" />
+        <state relative-caret-position="517">
+          <caret line="85" column="46" selection-start-line="85" selection-start-column="45" selection-end-line="85" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -495,8 +494,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="634">
-          <caret line="241" column="11" selection-start-line="241" selection-start-column="11" selection-end-line="241" selection-end-column="11" />
+        <state relative-caret-position="392">
+          <caret line="230" column="47" selection-start-line="230" selection-start-column="37" selection-end-line="230" selection-end-column="47" />
+          <folding>
+            <element signature="e#927#965#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
