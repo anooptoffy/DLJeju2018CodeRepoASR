@@ -226,8 +226,6 @@ def generator_wavegan(
         # [4096, 64] -> [8192, 1]
         with tf.variable_scope('upconv_4'):
             # output = conv1d_transpose(output, 1, kernel_len, 4, upsample=upsample)
-            print("here", output)
-            assert False
             output = conv1d_transpose(output, 1, kernel_len, 2, upsample=upsample)
             bias = tf_repeat(labels, batch_size, 8192, 1)
             output = output * bias
