@@ -81,10 +81,12 @@ class InputFunction(object):
     wav, labels = dataset.make_one_shot_iterator().get_next()
 
     random_noise = tf.random_uniform([batch_size, self.noise_dim], -1., 1., dtype=tf.float32)
-    labels = labels + tf.constant(100, name='fixed', dtype=tf.int64)
+    labels = labels + tf.constant(10, name='fixed', dtype=tf.int64)
     labels = tf.cast(labels, dtype=tf.float32)
     labels = tf.reshape(labels, [batch_size, 1])
-
+    tf.enable_eager_execution()
+    print(labels)
+    assert False
     features = {
         'real_audio': wav,
         'random_noise': random_noise}
