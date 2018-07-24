@@ -110,7 +110,7 @@ def model_fn(features, labels, mode, params):
         # Pass only noise to PREDICT mode
         random_noise = features['random_noise']
         predictions = {
-            'generated_audio': model.generator_wavegan(random_noise, labels, train=False )
+            'generated_audio': model.generator_wavegan(random_noise, labels, train=False)
         }
 
         return tf.contrib.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
@@ -124,8 +124,8 @@ def model_fn(features, labels, mode, params):
     generated_audio = model.generator_wavegan(random_noise, labels, train=is_training)
 
     # Get logits from discriminator
-    d_on_data_logits = model.discriminator_wavegan(real_audio, labels, reuse=False)
-    d_on_g_logits = model.discriminator_wavegan(generated_audio, labels, reuse=True)
+    d_on_data_logits = tf.squeeze(model.discriminator_wavegan(real_audio, labels, reuse=False))
+    d_on_g_logits = tf.squeeze(model.discriminator_wavegan(generated_audio, labels, reuse=True))
 
     # Calculate discriminator loss
     g_loss = -tf.reduce_mean(d_on_g_logits)
@@ -144,8 +144,8 @@ def model_fn(features, labels, mode, params):
 
     if mode != tf.estimator.ModeKeys.PREDICT:
         global_step = tf.reshape(tf.train.get_global_step(), [1])
-        g_loss_t = tf.tile(tf.reshape(g_loss, [1]), [batch_size])
-        d_loss_t = tf.tile(tf.reshape(d_loss, [1]), [batch_size])
+        g_loss_t = g_loss
+        d_loss_t = d_loss
         host_call = (host_call_fn, [global_step, g_loss_t, d_loss_t, real_audio, generated_audio])
 
     if mode == tf.estimator.ModeKeys.TRAIN:
@@ -154,9 +154,9 @@ def model_fn(features, labels, mode, params):
         #########
 
         d_optimizer = tf.train.AdamOptimizer(
-            learning_rate=FLAGS.learning_rate, beta1=0.5, beta2=0.9)
+            learning_rate=FLAGS.learning_rate, beta1=0.5)
         g_optimizer = tf.train.AdamOptimizer(
-            learning_rate=FLAGS.learning_rate, beta1=0.5, beta2=0.9)
+            learning_rate=FLAGS.learning_rate, beta1=0.5)
 
         if FLAGS.use_tpu:
             d_optimizer = tf.contrib.tpu.CrossShardOptimizer(d_optimizer)

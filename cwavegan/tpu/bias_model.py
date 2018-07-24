@@ -79,7 +79,7 @@ def discriminator_wavegan(
     labels,
     kernel_len=25,
     dim=64,
-    use_batchnorm=True,
+    use_batchnorm=False,
     phaseshuffle_rad=0,
     reuse=False,
     scope='Discriminator'):
@@ -162,7 +162,7 @@ def generator_wavegan(
     labels,
     kernel_len=25,
     dim=64,
-    use_batchnorm=True,
+    use_batchnorm=False,
     upsample='zeros',
     train=False,
     scope='Generator'
