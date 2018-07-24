@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2e8c2ea-b77e-44d0-ad89-638cf45efd29" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/cwavegan/tpu/bias_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/cwavegan/tpu/bias_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cwavegan/tpu/wgan_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/cwavegan/tpu/wgan_main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,8 +25,8 @@
       <file leaf-file-name="wgan_main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-15">
-              <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
+            <state relative-caret-position="402">
+              <caret line="62" column="39" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -35,8 +34,8 @@
       <file leaf-file-name="wgan_concat_main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_concat_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="354">
-              <caret line="149" column="39" lean-forward="true" selection-start-line="149" selection-start-column="39" selection-end-line="149" selection-end-column="39" />
+            <state relative-caret-position="447">
+              <caret line="155" column="98" lean-forward="true" selection-start-line="155" selection-start-column="98" selection-end-line="155" selection-end-column="98" />
               <folding>
                 <element signature="e#733#771#0" expanded="true" />
               </folding>
@@ -47,7 +46,7 @@
       <file leaf-file-name="bias_input.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_input.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="508">
+            <state relative-caret-position="1403">
               <caret line="86" selection-start-line="86" selection-end-line="86" />
             </state>
           </provider>
@@ -56,20 +55,11 @@
       <file leaf-file-name="bias_model.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1458">
+            <state relative-caret-position="-1233">
               <caret line="81" column="23" selection-start-line="81" selection-start-column="23" selection-end-line="81" selection-end-column="23" />
               <folding>
                 <element signature="e#927#965#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bias_main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="46" column="47" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -141,12 +131,12 @@
         <option value="$PROJECT_DIR$/cwavegan/tpu/tpu_model_toffy.py" />
         <option value="$PROJECT_DIR$/cwavegan/tpu/tpu1_model.py" />
         <option value="$PROJECT_DIR$/cwavegan/tpu/tpu1_input.py" />
-        <option value="$PROJECT_DIR$/cwavegan/tpu/concat_main.py" />
         <option value="$PROJECT_DIR$/cwavegan/tpu/concat_input.py" />
         <option value="$PROJECT_DIR$/cwavegan/tpu/wgan_concat_main.py" />
         <option value="$PROJECT_DIR$/cwavegan/tpu/bias_input.py" />
-        <option value="$PROJECT_DIR$/cwavegan/tpu/bias_main.py" />
         <option value="$PROJECT_DIR$/cwavegan/tpu/bias_model.py" />
+        <option value="$PROJECT_DIR$/cwavegan/tpu/bias_main.py" />
+        <option value="$PROJECT_DIR$/cwavegan/tpu/concat_main.py" />
         <option value="$PROJECT_DIR$/cwavegan/tpu/wgan_main.py" />
       </list>
     </option>
@@ -455,13 +445,6 @@
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/tpu_input_toffy.py" />
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/tpu_model_toffy.py" />
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/tpu_main_toffy.py" />
-    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/concat_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="132" column="30" selection-end-line="328" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/concat_input.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1314">
@@ -483,33 +466,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_input.py">
+    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/concat_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="86" selection-start-line="86" selection-end-line="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_concat_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="149" column="39" lean-forward="true" selection-start-line="149" selection-start-column="39" selection-end-line="149" selection-end-column="39" />
-          <folding>
-            <element signature="e#733#771#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="425">
+          <caret line="162" column="4" selection-start-line="162" selection-start-column="4" selection-end-line="162" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="46" column="47" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
+        <state relative-caret-position="467">
+          <caret line="154" column="4" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1458">
+        <state relative-caret-position="-1233">
           <caret line="81" column="23" selection-start-line="81" selection-start-column="23" selection-end-line="81" selection-end-column="23" />
           <folding>
             <element signature="e#927#965#0" expanded="true" />
@@ -517,10 +490,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_concat_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="155" column="98" lean-forward="true" selection-start-line="155" selection-start-column="98" selection-end-line="155" selection-end-column="98" />
+          <folding>
+            <element signature="e#733#771#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cwavegan/tpu/bias_input.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1403">
+          <caret line="86" selection-start-line="86" selection-end-line="86" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cwavegan/tpu/wgan_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-15">
-          <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
+        <state relative-caret-position="402">
+          <caret line="62" column="39" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
         </state>
       </provider>
     </entry>

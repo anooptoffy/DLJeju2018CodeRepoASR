@@ -147,7 +147,7 @@ def model_fn(features, labels, mode, params):
         g_loss_t = tf.tile(tf.reshape(g_loss, [1]), [batch_size])
         d_loss_t = tf.tile(tf.reshape(d_loss, [1]), [batch_size])
         host_call = (host_call_fn, [global_step, g_loss_t, d_loss_t, real_audio, generated_audio])
-        
+
     if mode == tf.estimator.ModeKeys.TRAIN:
         #########
         # TRAIN #
